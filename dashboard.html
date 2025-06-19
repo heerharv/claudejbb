@@ -1,701 +1,1079 @@
-<!DOCTYPE html>
+.progress-section p {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNCIA Jira Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .header h1 {
-            color: #2d3748;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .header p {
-            color: #718096;
-            margin-top: 0.5rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .controls {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .project-selector {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .project-selector label {
-            font-weight: 600;
-            color: #2d3748;
-        }
-        
-        .project-selector select {
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            font-size: 1rem;
-            min-width: 200px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .project-selector select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-        
-        .stat-card h3 {
-            color: #4a5568;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-card .value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-card .label {
-            color: #718096;
-            font-size: 0.9rem;
-        }
-        
-        .total .value { color: #667eea; }
-        .completed .value { color: #38a169; }
-        .progress .value { color: #ed8936; }
-        .todo .value { color: #e53e3e; }
-        
-        .progress-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .progress-section h2 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .progress-bar-container {
-            background: #f7fafc;
-            border-radius: 12px;
-            height: 12px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #38a169 0%, #48bb78 100%);
-            border-radius: 12px;
-            transition: width 1s ease-in-out;
-        }
-        
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .chart-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .chart-card h3 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-        }
-        
-        .recent-activity {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .recent-activity h2 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .activity-item {
-            display: flex;
-            justify-content: between;
-            align-items: start;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            background: #f7fafc;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .activity-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .activity-content {
-            flex: 1;
-        }
-        
-        .activity-content .issue-key {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .activity-content .issue-title {
-            color: #2d3748;
-            font-weight: 500;
-            margin: 0.25rem 0;
-        }
-        
-        .activity-content .issue-meta {
-            color: #718096;
-            font-size: 0.8rem;
-        }
-        
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-todo { background: #fed7d7; color: #c53030; }
-        .status-progress { background: #feebc8; color: #dd6b20; }
-        .status-done { background: #c6f6d5; color: #38a169; }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #718096;
-        }
-        
-        .error {
-            background: #fed7d7;
-            color: #c53030;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #feb2b2;
-        }
-        
-        .warning {
-            background: #fefcbf;
-            color: #744210;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #f6e05e;
-        }
-        
-        .insights {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .insights h2 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .insight-item {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #38a169;
-        }
-        
-        .insight-warning { 
-            background: #fef5e7; 
-            border-left-color: #ed8936; 
-        }
-        
-        .insight-success { 
-            background: #f0fff4; 
-            border-left-color: #38a169; 
-        }
-        
-        .insight-info { 
-            background: #ebf8ff; 
-            border-left-color: #3182ce; 
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .header {
-                padding: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .project-selector {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .project-selector select {
-                min-width: auto;
-            }
-            
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNCIA Jira Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #552E8C 0%, #6B46C1 25%, #552E8C 50%, #7C3AED 75%, #552E8C 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.header {
+    background: rgba(85, 46, 140, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 2rem;
+    box-shadow: 0 8px 40px rgba(85, 46, 140, 0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.header h1 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.header p {
+    color: rgba(255,255,255,0.9);
+    margin-top: 0.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.controls {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.project-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.project-selector label {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.project-selector select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    font-size: 1rem;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.project-selector select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.refresh-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(85, 46, 140, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(85, 46, 140, 0.5);
+    background: rgba(85, 46, 140, 0.9);
+}
+
+.stat-card h3 {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.stat-card .label {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+}
+
+.total .value { color: #60A5FA; }
+.completed .value { color: #34D399; }
+.progress .value { color: #FBBF24; }
+.todo .value { color: #F87171; }
+
+.progress-section {
+    background: rgba(85, 46, 140, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.progress-section h2 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.progress-bar-container {
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #34D399 0%, #10B981 100%);
+    border-radius: 12px;
+    transition: width 1s ease-in-out;
+}
+
+/* Timeline Styles */
+.timeline-section {
+    background: rgba(85, 46, 140, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.timeline-section h2 {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.timeline-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 2rem 0;
+    overflow-x: auto;
+    min-width: 1000px;
+}
+
+.timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+    z-index: 2;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    border: 3px solid #e2e8f0;
+    background: white;
+    color: #718096;
+    transition: all 0.3s ease;
+}
+
+.timeline-step.completed .step-number {
+    background: linear-gradient(135deg, #38a169 0%, #48bb78 100%);
+    border-color: #38a169;
+    color: white;
+    position: relative;
+}
+
+.timeline-step.completed .step-number::after {
+    content: '✓';
+    font-size: 1rem;
+    position: absolute;
+}
+
+.timeline-step.current .step-number {
+    background: linear-gradient(135deg, #552E8C 0%, #7C3AED 100%);
+    border-color: #552E8C;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(85, 46, 140, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(85, 46, 140, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(85, 46, 140, 0); }
+}
+
+.step-content {
+    text-align: center;
+    max-width: 100px;
+}
+
+.step-content h4 {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.step-content p {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.7rem;
+    line-height: 1.2;
+}
+
+.timeline-connector {
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    flex: 1;
+    margin: 0 10px;
+    border-radius: 2px;
+    position: relative;
+    top: -40px;
+}
+
+.timeline-connector.completed {
+    background: linear-gradient(90deg, #34D399 0%, #10B981 100%);
+}
+
+.timeline-progress-text {
+    text-align: center;
+    margin-top: 1rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-card {
+    background: rgba(85, 46, 140, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.chart-card h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.recent-activity {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.recent-activity h2 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: between;
+    align-items: start;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content .issue-key {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.activity-content .issue-title {
+    color: #2d3748;
+    font-weight: 500;
+    margin: 0.25rem 0;
+}
+
+.activity-content .issue-meta {
+    color: #718096;
+    font-size: 0.8rem;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-todo { background: #fed7d7; color: #c53030; }
+.status-progress { background: #feebc8; color: #dd6b20; }
+.status-done { background: #c6f6d5; color: #38a169; }
+
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.error {
+    background: rgba(248, 113, 113, 0.9);
+    color: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+}
+
+.warning {
+    background: rgba(251, 191, 36, 0.9);
+    color: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+}
+
+.insights {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.insights h2 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.insight-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #38a169;
+}
+
+.insight-warning { 
+    background: #fef5e7; 
+    border-left-color: #ed8936; 
+}
+
+.insight-success { 
+    background: #f0fff4; 
+    border-left-color: #38a169; 
+}
+
+.insight-info { 
+    background: #ebf8ff; 
+    border-left-color: #3182ce; 
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .header {
+        padding: 1rem;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .project-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .project-selector select {
+        min-width: auto;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline-container {
+        flex-direction: column;
+        min-width: auto;
+        gap: 1rem;
+    }
+    
+    .timeline-connector {
+        display: none;
+    }
+    
+    .timeline-step {
+        flex-direction: row;
+        text-align: left;
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .step-number {
+        margin-right: 1rem;
+        margin-bottom: 0;
+    }
+    
+    .step-content {
+        text-align: left;
+        max-width: none;
+    }
+}
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 UNCIA Jira Dashboard</h1>
-        <p>Real-time insights from your Jira projects</p>
+<div class="header">
+<h1>🚀 UNCIA Jira Dashboard</h1>
+<p>Real-time insights from your Jira projects</p>
+</div>
+
+<div class="container">
+<div class="controls">
+    <div class="project-selector">
+        <label for="projectSelect">Select Project:</label>
+        <select id="projectSelect">
+            <option value="">Loading projects...</option>
+        </select>
+        <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+    </div>
+</div>
+
+<div id="error-container"></div>
+<div id="loading" class="loading">Loading dashboard data...</div>
+<div id="dashboard" style="display: none;">
+    
+    <div class="stats-grid">
+        <div class="stat-card total">
+            <h3>Total Issues</h3>
+            <div class="value" id="totalIssues">-</div>
+            <div class="label">All issues in project</div>
+        </div>
+        <div class="stat-card completed">
+            <h3>Completed</h3>
+            <div class="value" id="completedIssues">-</div>
+            <div class="label">Done & resolved</div>
+        </div>
+        <div class="stat-card progress">
+            <h3>In Progress</h3>
+            <div class="value" id="progressIssues">-</div>
+            <div class="label">Currently active</div>
+        </div>
+        <div class="stat-card todo">
+            <h3>To Do</h3>
+            <div class="value" id="todoIssues">-</div>
+            <div class="label">Pending work</div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="controls">
-            <div class="project-selector">
-                <label for="projectSelect">Select Project:</label>
-                <select id="projectSelect">
-                    <option value="">Loading projects...</option>
-                </select>
-                <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
-            </div>
+    <div class="progress-section">
+        <h2>📊 Project Progress</h2>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
         </div>
+        <p id="progressText">0% Complete</p>
+    </div>
 
-        <div id="error-container"></div>
-        <div id="loading" class="loading">Loading dashboard data...</div>
-        <div id="dashboard" style="display: none;">
+    <!-- Updated Project Timeline Section with UNCIA-specific steps -->
+    <div class="timeline-section">
+        <h2>🚀 Project Implementation Timeline</h2>
+        <div class="timeline-container">
+            <div class="timeline-step completed" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Take Over</h4>
+                    <p>Project handover & onboarding</p>
+                </div>
+            </div>
+            <div class="timeline-connector completed"></div>
             
-            <div class="stats-grid">
-                <div class="stat-card total">
-                    <h3>Total Issues</h3>
-                    <div class="value" id="totalIssues">-</div>
-                    <div class="label">All issues in project</div>
-                </div>
-                <div class="stat-card completed">
-                    <h3>Completed</h3>
-                    <div class="value" id="completedIssues">-</div>
-                    <div class="label">Done & resolved</div>
-                </div>
-                <div class="stat-card progress">
-                    <h3>In Progress</h3>
-                    <div class="value" id="progressIssues">-</div>
-                    <div class="label">Currently active</div>
-                </div>
-                <div class="stat-card todo">
-                    <h3>To Do</h3>
-                    <div class="value" id="todoIssues">-</div>
-                    <div class="label">Pending work</div>
+            <div class="timeline-step completed" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Day 0</h4>
+                    <p>Initial setup & kickoff</p>
                 </div>
             </div>
-
-            <div class="progress-section">
-                <h2>📊 Project Progress</h2>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-                </div>
-                <p id="progressText">0% Complete</p>
-            </div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <h3>📈 Status Distribution</h3>
-                    <canvas id="statusChart" width="400" height="200"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3>👥 Assignment Status</h3>
-                    <canvas id="assignmentChart" width="400" height="200"></canvas>
+            <div class="timeline-connector completed"></div>
+            
+            <div class="timeline-step current" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>GO LIVE INTIATION</h4>
+                    <p>First deployment</p>
                 </div>
             </div>
-
-            <div class="recent-activity">
-                <h2>⚡ Recent Activity</h2>
-                <div id="recentIssues"></div>
+            <div class="timeline-connector"></div>
+            
+            <div class="timeline-step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Readiness for Day !</h4>
+                    <p>Preparation phase</p>
+                </div>
             </div>
-
-            <div class="insights">
-                <h2>💡 Project Insights</h2>
-                <div id="projectInsights"></div>
+            <div class="timeline-connector"></div>
+            
+            <div class="timeline-step" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Solution Design</h4>
+                    <p>Architecture & planning</p>
+                </div>
             </div>
+            <div class="timeline-connector"></div>
+            
+            <div class="timeline-step" data-step="6">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Reports</h4>
+                    <p>Documentation & analysis</p>
+                </div>
+            </div>
+            <div class="timeline-connector"></div>
+            
+            <div class="timeline-step" data-step="7">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h4>Readiness for Go Live</h4>
+                    <p>Final preparation</p>
+                </div>
+            </div>
+            <div class="timeline-connector"></div>
+            
+            <div class="timeline-step" data-step="8">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h4>GO LIVE</h4>
+                    <p>Production launch</p>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-progress-text">
+            <span id="timelineProgressText">Step 3 of 8 - GO LIVE INTIATION Phase</span>
         </div>
     </div>
 
-    <script>
-        const API_BASE = 'http://localhost:8000';
-        let currentProject = 'SCRUM';
-        let dashboardData = null;
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>📈 Status Distribution</h3>
+            <canvas id="statusChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>👥 Assignment Status</h3>
+            <canvas id="assignmentChart" width="400" height="200"></canvas>
+        </div>
+    </div>
 
-        // Load projects on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProjects();
+    <div class="recent-activity">
+        <h2>⚡ Recent Activity</h2>
+        <div id="recentIssues"></div>
+    </div>
+
+    <div class="insights">
+        <h2>💡 Project Insights</h2>
+        <div id="projectInsights"></div>
+    </div>
+</div>
+</div>
+
+<script>
+const API_BASE = 'http://localhost:8000';
+let currentProject = 'SCRUM';
+let dashboardData = null;
+
+// Load projects on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadProjects();
+});
+
+async function loadProjects() {
+    try {
+        const response = await fetch(`${API_BASE}/api/jira-projects`);
+        const data = await response.json();
+        
+        const select = document.getElementById('projectSelect');
+        select.innerHTML = '';
+        
+        data.values.forEach(project => {
+            const option = document.createElement('option');
+            option.value = project.key;
+            option.textContent = `${project.key} - ${project.name}`;
+            select.appendChild(option);
         });
-
-        async function loadProjects() {
-            try {
-                const response = await fetch(`${API_BASE}/api/jira-projects`);
-                const data = await response.json();
-                
-                const select = document.getElementById('projectSelect');
-                select.innerHTML = '';
-                
-                data.values.forEach(project => {
-                    const option = document.createElement('option');
-                    option.value = project.key;
-                    option.textContent = `${project.key} - ${project.name}`;
-                    select.appendChild(option);
-                });
-                
-                // Set SCRUM as default
-                select.value = 'SCRUM';
-                currentProject = 'SCRUM';
-                
-                // Load initial data
+        
+        // Set SCRUM as default
+        select.value = 'SCRUM';
+        currentProject = 'SCRUM';
+        
+        // Load initial data
+        loadData();
+        
+        // Add change listener
+        select.addEventListener('change', function() {
+            currentProject = this.value;
+            if (currentProject) {
                 loadData();
-                
-                // Add change listener
-                select.addEventListener('change', function() {
-                    currentProject = this.value;
-                    if (currentProject) {
-                        loadData();
-                    }
-                });
-                
-            } catch (error) {
-                showError('Failed to load projects: ' + error.message);
             }
-        }
+        });
+        
+    } catch (error) {
+        showError('Failed to load projects: ' + error.message);
+    }
+}
 
-        async function loadData() {
-            if (!currentProject) return;
-            
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('error-container').innerHTML = '';
-            
-            try {
-                const response = await fetch(`${API_BASE}/api/jira/dashboard/${currentProject}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                dashboardData = await response.json();
-                updateDashboard();
-                
-            } catch (error) {
-                showError('Failed to load dashboard data: ' + error.message);
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
+async function loadData() {
+    if (!currentProject) return;
+    
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('error-container').innerHTML = '';
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/jira/dashboard/${currentProject}`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
+        
+        dashboardData = await response.json();
+        updateDashboard();
+        
+    } catch (error) {
+        showError('Failed to load dashboard data: ' + error.message);
+    } finally {
+        document.getElementById('loading').style.display = 'none';
+    }
+}
 
-        function updateDashboard() {
-            if (!dashboardData) return;
-            
-            const { status_counts, progress_percentage, recent_issues, assignee_distribution } = dashboardData;
-            
-            // Update stats
-            document.getElementById('totalIssues').textContent = status_counts.total || 0;
-            document.getElementById('completedIssues').textContent = status_counts.done || 0;
-            document.getElementById('progressIssues').textContent = status_counts.in_progress || 0;
-            document.getElementById('todoIssues').textContent = status_counts.todo || 0;
-            
-            // Update progress bar
-            const progressPercent = progress_percentage || 0;
-            document.getElementById('progressBar').style.width = progressPercent + '%';
-            document.getElementById('progressText').textContent = `${progressPercent}% Complete`;
-            
-            // Update charts
-            updateStatusChart(status_counts);
-            updateAssignmentChart(assignee_distribution, status_counts.total);
-            
-            // Update recent activity
-            updateRecentActivity(recent_issues);
-            
-            // Update insights
-            updateInsights();
-            
-            document.getElementById('dashboard').style.display = 'block';
-        }
+function updateDashboard() {
+    if (!dashboardData) return;
+    
+    const { status_counts, progress_percentage, recent_issues, assignee_distribution } = dashboardData;
+    
+    // Update stats
+    document.getElementById('totalIssues').textContent = status_counts.total || 0;
+    document.getElementById('completedIssues').textContent = status_counts.done || 0;
+    document.getElementById('progressIssues').textContent = status_counts.in_progress || 0;
+    document.getElementById('todoIssues').textContent = status_counts.todo || 0;
+    
+    // Update progress bar
+    const progressPercent = progress_percentage || 0;
+    document.getElementById('progressBar').style.width = progressPercent + '%';
+    document.getElementById('progressText').textContent = `${progressPercent}% Complete`;
+    
+    // Update charts
+    updateStatusChart(status_counts);
+    updateAssignmentChart(assignee_distribution, status_counts.total);
+    
+    // Update recent activity
+    updateRecentActivity(recent_issues);
+    
+    // Update insights
+    updateInsights();
+    
+    // Update timeline
+    updateTimeline();
+    
+    document.getElementById('dashboard').style.display = 'block';
+}
 
-        function updateStatusChart(statusCounts) {
-            const ctx = document.getElementById('statusChart').getContext('2d');
-            
-            // Destroy existing chart if it exists
-            if (window.statusChart && typeof window.statusChart.destroy === 'function') {
-                window.statusChart.destroy();
-            }
-            
-            window.statusChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['To Do', 'In Progress', 'Done'],
-                    datasets: [{
-                        data: [
-                            statusCounts.todo || 0,
-                            statusCounts.in_progress || 0,
-                            statusCounts.done || 0
-                        ],
-                        backgroundColor: [
-                            '#e53e3e',
-                            '#ed8936', 
-                            '#38a169'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
+function updateStatusChart(statusCounts) {
+    const canvas = document.getElementById('statusChart');
+    if (!canvas) {
+        console.error('Status chart canvas not found');
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.statusChart && typeof window.statusChart.destroy === 'function') {
+        window.statusChart.destroy();
+    }
+    
+    // Set canvas size explicitly
+    canvas.style.width = '100%';
+    canvas.style.height = '300px';
+    
+    const data = [
+        statusCounts.todo || 0,
+        statusCounts.in_progress || 0,
+        statusCounts.done || 0
+    ];
+    
+    console.log('Creating status chart with data:', data);
+    
+    // Only create chart if we have data
+    if (data.some(value => value > 0)) {
+        window.statusChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['To Do', 'In Progress', 'Done'],
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        '#F87171',  // Red for To Do
+                        '#FBBF24',  // Yellow for In Progress
+                        '#34D399'   // Green for Done
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#ffffff',
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14
+                            }
                         }
                     }
                 }
-            });
-        }
-
-        function updateAssignmentChart(assigneeDistribution, totalIssues) {
-            const ctx = document.getElementById('assignmentChart').getContext('2d');
-            
-            // Destroy existing chart if it exists
-            if (window.assignmentChart && typeof window.assignmentChart.destroy === 'function') {
-                window.assignmentChart.destroy();
             }
-            
-            const assignedCount = Object.values(assigneeDistribution || {}).reduce((a, b) => a + b, 0);
-            const unassignedCount = (totalIssues || 0) - assignedCount;
-            
-            window.assignmentChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Assigned', 'Unassigned'],
-                    datasets: [{
-                        data: [assignedCount, unassignedCount],
-                        backgroundColor: [
-                            '#3182ce',
-                            '#ed8936'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
+        });
+        
+        console.log('Status chart created successfully:', window.statusChart);
+    } else {
+        console.log('No data available for status chart');
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+    }
+}
+
+function updateAssignmentChart(assigneeDistribution, totalIssues) {
+    const canvas = document.getElementById('assignmentChart');
+    if (!canvas) {
+        console.error('Assignment chart canvas not found');
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.assignmentChart && typeof window.assignmentChart.destroy === 'function') {
+        window.assignmentChart.destroy();
+    }
+    
+    // Set canvas size explicitly
+    canvas.style.width = '100%';
+    canvas.style.height = '300px';
+    
+    const assignedCount = Object.values(assigneeDistribution || {}).reduce((a, b) => a + b, 0);
+    const unassignedCount = Math.max(0, (totalIssues || 0) - assignedCount);
+    
+    console.log('Creating assignment chart - Total:', totalIssues, 'Assigned:', assignedCount, 'Unassigned:', unassignedCount);
+    
+    const data = [assignedCount, unassignedCount];
+    
+    // Only create chart if we have data
+    if (totalIssues > 0) {
+        window.assignmentChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Assigned', 'Unassigned'],
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        '#60A5FA',  // Blue for Assigned
+                        '#F97316'   // Orange for Unassigned
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#ffffff',
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14
+                            }
                         }
                     }
                 }
-            });
-        }
-
-        function updateRecentActivity(recentIssues) {
-            const container = document.getElementById('recentIssues');
-            
-            if (!recentIssues || recentIssues.length === 0) {
-                container.innerHTML = '<p>No recent activity found.</p>';
-                return;
             }
-            
-            container.innerHTML = recentIssues.map(issue => {
-                const statusClass = getStatusClass(issue.status);
-                const date = new Date(issue.updated).toLocaleDateString();
-                
-                return `
-                    <div class="activity-item">
-                        <div class="activity-content">
-                            <div class="issue-key">${issue.key}</div>
-                            <div class="issue-title">${issue.summary}</div>
-                            <div class="issue-meta">
-                                <span class="status-badge ${statusClass}">${issue.status}</span>
-                                • Assigned to: ${issue.assignee}
-                                • Updated: ${date}
-                            </div>
-                        </div>
+        });
+        
+        console.log('Assignment chart created successfully:', window.assignmentChart);
+    } else {
+        console.log('No data available for assignment chart');
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+    }
+}
+
+function updateRecentActivity(recentIssues) {
+    const container = document.getElementById('recentIssues');
+    
+    if (!recentIssues || recentIssues.length === 0) {
+        container.innerHTML = '<p>No recent activity found.</p>';
+        return;
+    }
+    
+    container.innerHTML = recentIssues.map(issue => {
+        const statusClass = getStatusClass(issue.status);
+        const date = new Date(issue.updated).toLocaleDateString();
+        
+        return `
+            <div class="activity-item">
+                <div class="activity-content">
+                    <div class="issue-key">${issue.key}</div>
+                    <div class="issue-title">${issue.summary}</div>
+                    <div class="issue-meta">
+                        <span class="status-badge ${statusClass}">${issue.status}</span>
+                        • Assigned to: ${issue.assignee}
+                        • Updated: ${date}
                     </div>
-                `;
-            }).join('');
-        }
-
-        function updateInsights() {
-            const container = document.getElementById('projectInsights');
-            const { status_counts, assignee_distribution, progress_percentage } = dashboardData;
-            
-            const totalIssues = status_counts.total || 0;
-            const assignedCount = Object.values(assignee_distribution || {}).reduce((a, b) => a + b, 0);
-            const unassignedCount = totalIssues - assignedCount;
-            
-            let insights = [];
-            
-            // Progress insight
-            if (progress_percentage < 5) {
-                insights.push({
-                    type: 'info',
-                    title: '🚀 Project Getting Started',
-                    message: `Your project is in early stages with ${progress_percentage}% completion. Focus on breaking down large tasks and getting initial features working.`
-                });
-            }
-            
-            // Assignment insight
-            if (unassignedCount > totalIssues * 0.5) {
-                insights.push({
-                    type: 'warning',
-                    title: '⚠️ Many Unassigned Issues',
-                    message: `${unassignedCount} out of ${totalIssues} issues are unassigned. Consider assigning these to team members to improve project velocity.`
-                });
-            }
-            
-            // Team insight
-            const teamSize = Object.keys(assignee_distribution || {}).length;
-            if (teamSize === 1) {
-                insights.push({
-                    type: 'info',
-                    title: '👤 Solo Project',
-                    message: 'This appears to be a solo project. Consider breaking down large tasks into smaller, manageable pieces.'
-                });
-            }
-            
-            // Success insight
-            if (status_counts.done > 0) {
-                insights.push({
-                    type: 'success',
-                    title: '✅ Making Progress',
-                    message: `Great work! You've completed ${status_counts.done} issues. Keep up the momentum!`
-                });
-            }
-            
-            container.innerHTML = insights.map(insight => `
-                <div class="insight-item insight-${insight.type}">
-                    <h4>${insight.title}</h4>
-                    <p>${insight.message}</p>
                 </div>
-            `).join('');
-        }
+            </div>
+        `;
+    }).join('');
+}
 
-        function getStatusClass(status) {
-            const statusLower = status.toLowerCase();
-            if (statusLower.includes('done') || statusLower.includes('complete')) {
-                return 'status-done';
-            } else if (statusLower.includes('progress')) {
-                return 'status-progress';
-            } else {
-                return 'status-todo';
-            }
-        }
+function updateInsights() {
+    const container = document.getElementById('projectInsights');
+    const { status_counts, assignee_distribution, progress_percentage } = dashboardData;
+    
+    const totalIssues = status_counts.total || 0;
+    const assignedCount = Object.values(assignee_distribution || {}).reduce((a, b) => a + b, 0);
+    const unassignedCount = totalIssues - assignedCount;
+    
+    let insights = [];
+    
+    // Progress insight
+    if (progress_percentage < 5) {
+        insights.push({
+            type: 'info',
+            title: '🚀 Project Getting Started',
+            message: `Your project is in early stages with ${progress_percentage}% completion. Focus on breaking down large tasks and getting initial features working.`
+        });
+    }
+    
+    // Assignment insight
+    if (unassignedCount > totalIssues * 0.5) {
+        insights.push({
+            type: 'warning',
+            title: '⚠️ Many Unassigned Issues',
+            message: `${unassignedCount} out of ${totalIssues} issues are unassigned. Consider assigning these to team members to improve project velocity.`
+        });
+    }
+    
+    // Team insight
+    const teamSize = Object.keys(assignee_distribution || {}).length;
+    if (teamSize === 1) {
+        insights.push({
+            type: 'info',
+            title: '👤 Solo Project',
+            message: 'This appears to be a solo project. Consider breaking down large tasks into smaller, manageable pieces.'
+        });
+    }
+    
+    // Success insight
+    if (status_counts.done > 0) {
+        insights.push({
+            type: 'success',
+            title: '✅ Making Progress',
+            message: `Great work! You've completed ${status_counts.done} issues. Keep up the momentum!`
+        });
+    }
+    
+    container.innerHTML = insights.map(insight => `
+        <div class="insight-item insight-${insight.type}">
+            <h4>${insight.title}</h4>
+            <p>${insight.message}</p>
+        </div>
+    `).join('');
+}
 
-        function showError(message) {
-            const container = document.getElementById('error-container');
-            container.innerHTML = `
-                <div class="error">
-                    <strong>Error:</strong> ${message}
-                    <br><small>Make sure your Flask app is running on http://localhost:8000</small>
-                </div>
-            `;
+function updateTimeline() {
+    const { status_counts, progress_percentage } = dashboardData;
+    
+    // Updated timeline logic for UNCIA-specific workflow
+    let currentStep = 1;
+    let stepText = "Take Over";
+    
+    if (progress_percentage > 0) {
+        currentStep = 2;
+        stepText = "Day 0";
+    }
+    
+    if (status_counts.done > 0 && status_counts.done >= status_counts.total * 0.1) {
+        currentStep = 3;
+        stepText = "GO LIVE INTIATION";
+    }
+    
+    if (status_counts.done >= status_counts.total * 0.25) {
+        currentStep = 4;
+        stepText = "Readiness for Day !";
+    }
+    
+    if (status_counts.done >= status_counts.total * 0.4) {
+        currentStep = 5;
+        stepText = "Solution Design";
+    }
+    
+    if (status_counts.done >= status_counts.total * 0.6) {
+        currentStep = 6;
+        stepText = "Reports";
+    }
+    
+    if (status_counts.done >= status_counts.total * 0.8) {
+        currentStep = 7;
+        stepText = "Readiness for Go Live";
+    }
+    
+    if (status_counts.done === status_counts.total) {
+        currentStep = 8;
+        stepText = "GO LIVE";
+    }
+    
+    // Update timeline visual state
+    const steps = document.querySelectorAll('.timeline-step');
+    const connectors = document.querySelectorAll('.timeline-connector');
+    
+    steps.forEach((step, index) => {
+        const stepNumber = index + 1;
+        step.classList.remove('completed', 'current');
+        
+        if (stepNumber < currentStep) {
+            step.classList.add('completed');
+        } else if (stepNumber === currentStep) {
+            step.classList.add('current');
         }
-    </script>
+    });
+    
+    connectors.forEach((connector, index) => {
+        connector.classList.remove('completed');
+        if (index + 1 < currentStep) {
+            connector.classList.add('completed');
+        }
+    });
+    
+    // Update progress text
+    document.getElementById('timelineProgressText').textContent = 
+        `Step ${currentStep} of 8 - ${stepText}`;
+}
+
+function getStatusClass(status) {
+    const statusLower = status.toLowerCase();
+    if (statusLower.includes('done') || statusLower.includes('complete')) {
+        return 'status-done';
+    } else if (statusLower.includes('progress')) {
+        return 'status-progress';
+    } else {
+        return 'status-todo';
+    }
+}
+
+function showError(message) {
+    const container = document.getElementById('error-container');
+    container.innerHTML = `
+        <div class="error">
+            <strong>Error:</strong> ${message}
+            <br><small>Make sure your Flask app is running on http://localhost:8000</small>
+        </div>
+    `;
+}
+</script>
 </body>
 </html>
