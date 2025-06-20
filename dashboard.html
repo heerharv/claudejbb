@@ -1,8 +1,3 @@
-<!-- .progress-section p {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1.1rem;
-} -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,7 +61,7 @@ body {
 
 .controls {
     /* background: rgba(255, 255, 255, 0.95); */
-    background: #552E8C;
+    background-color: #552E8C;
     box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
     border: 1px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
@@ -87,14 +82,14 @@ body {
 .project-selector label {
     font-size: large;
     font-weight: 900;
-    color: white;
+    color: White;
 }
 
 .project-selector select {
     padding: 0.75rem 1rem;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    background: White;
+    background: white;
     font-size: 1rem;
     min-width: 200px;
     cursor: pointer;
@@ -187,6 +182,12 @@ body {
     color: #ffffff;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+}
+
+.progress-section p {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .progress-bar-container {
@@ -327,6 +328,170 @@ body {
     margin-bottom: 2rem;
 }
 
+/* Kanban Board Styles */
+.board-section {
+    background: rgba(85, 46, 140, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.board-section h2 {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    min-height: 500px;
+}
+
+.kanban-column {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.column-header {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.todo-header {
+    background: linear-gradient(135deg, #F87171, #EF4444);
+    color: white;
+}
+
+.progress-header {
+    background: linear-gradient(135deg, #FBBF24, #F59E0B);
+    color: rgb(255, 255, 255);
+}
+
+.done-header {
+    background: linear-gradient(135deg, #34D399, #10B981);
+    color: white;
+}
+
+.column-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.issue-count {
+    background: rgba(255,255,255,0.3);
+    color: rgb(255, 255, 255);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.column-content {
+    padding: 1rem;
+    max-height: 450px;
+    overflow-y: auto;
+    background-color: #dcd0ee;
+}
+
+.issue-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.issue-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #552E8C;
+}
+
+.issue-card:last-child {
+    margin-bottom: 0;
+}
+
+.issue-key {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #552E8C;
+    margin-bottom: 0.5rem;
+}
+
+.issue-summary {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2d3748;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.issue-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.issue-assignee {
+    color: #718096;
+    background: #f7fafc;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.issue-type {
+    color: #552E8C;
+    font-weight: 600;
+}
+
+.loading-board {
+    text-align: center;
+    color: #718096;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.no-issues {
+    text-align: center;
+    color: #a0aec0;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.issue-priority {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+.priority-highest { background: #dc2626; }
+.priority-high { background: #ea580c; }
+.priority-medium { background: #d97706; }
+.priority-low { background: #65a30d; }
+.priority-lowest { background: #059669; }
+
 .chart-card {
     background: rgba(85, 46, 140, 0.8);
     backdrop-filter: blur(20px);
@@ -334,22 +499,11 @@ body {
     padding: 1.5rem;
     box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
     border: 1px solid rgba(255,255,255,0.2);
-    height: 260px;
+    height: 320px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.placeholder {
-    color: #bbb;
-    text-align: center;
-    font-size: 1.1rem;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
 }
 
 .chart-card h3 {
@@ -357,14 +511,25 @@ body {
     margin-bottom: 1rem;
     font-size: 1.25rem;
 }
+.recent-activity::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 12px;
+    background: #e6d6f3;
+}
+
+.recent-activity::-webkit-scrollbar-thumb {
+    background: #b39ddb;
+    border-radius: 12px;
+}
 
 .recent-activity {
-    /* background: rgba(255, 255, 255, 0.95); */
     background: #dcd0ee;
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    max-height: 450px;
+    overflow-y: auto;
 }
 
 .recent-activity h2 {
@@ -405,7 +570,7 @@ body {
 }
 
 .activity-content .issue-meta {
-    color: #552E8C;
+    color: #718096;
     font-size: 0.8rem;
 }
 
@@ -449,8 +614,7 @@ body {
 }
 
 .insights {
-    /* background: rgba(255, 255, 255, 0.95); */
-    background: #dcd0ee;
+    background:#dcd0ee;
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
@@ -484,6 +648,17 @@ body {
 .insight-info { 
     background: #ebf8ff; 
     border-left-color: #3182ce; 
+}
+
+.placeholder {
+    color: #bbb;
+    text-align: center;
+    font-size: 1.1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
 }
 
 @media (max-width: 768px) {
@@ -531,6 +706,30 @@ body {
         height: 280px !important;
     }
     
+    /* Mobile Kanban Board */
+    .kanban-board {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .kanban-column {
+        max-height: 300px;
+    }
+    
+    .column-content {
+        max-height: 220px;
+    }
+    
+    .issue-card {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .issue-summary {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 3;
+    }
+    
     .timeline-container {
         flex-direction: column;
         min-width: auto;
@@ -562,7 +761,7 @@ body {
 </head>
 <body>
 <div class="header">
-    <img src="uncia_logo.png" alt="UNCIA Logo" style="height:48px; width:auto; display:block; margin-right:16px; background:transparent;"/>
+    <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
     <div class="header-content">
         <h1>UNCIA Jira Dashboard</h1>
     </div>
@@ -616,7 +815,7 @@ body {
 
     <!-- Updated Project Timeline Section with UNCIA-specific steps -->
     <div class="timeline-section">
-        <h2> Project Implementation Timeline</h2>
+        <h2>🚀 Project Implementation Timeline</h2>
         <div class="timeline-container">
             <div class="timeline-step completed" data-step="1">
                 <div class="step-number">1</div>
@@ -702,6 +901,42 @@ body {
         <div class="chart-card">
             <h3>👥 Assignment Status</h3>
             <canvas id="assignmentChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Kanban Board Section -->
+    <div class="board-section">
+        <h2>📋 Project Board</h2>
+        <div class="kanban-board">
+            <div class="kanban-column">
+                <div class="column-header todo-header">
+                    <h3>📝 To Do</h3>
+                    <span class="issue-count" id="todoCount">0</span>
+                </div>
+                <div class="column-content" id="todoColumn">
+                    <div class="loading-board">Loading issues...</div>
+                </div>
+            </div>
+            
+            <div class="kanban-column">
+                <div class="column-header progress-header">
+                    <h3>🔄 In Progress</h3>
+                    <span class="issue-count" id="progressCount">0</span>
+                </div>
+                <div class="column-content" id="progressColumn">
+                    <div class="loading-board">Loading issues...</div>
+                </div>
+            </div>
+            
+            <div class="kanban-column">
+                <div class="column-header done-header">
+                    <h3>✅ Done</h3>
+                    <span class="issue-count" id="doneCount">0</span>
+                </div>
+                <div class="column-content" id="doneColumn">
+                    <div class="loading-board">Loading issues...</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -813,6 +1048,9 @@ function updateDashboard() {
     
     // Update timeline
     updateTimeline();
+    
+    // Update board
+    updateBoard();
     
     document.getElementById('dashboard').style.display = 'block';
 }
@@ -1204,6 +1442,93 @@ function updateTimeline() {
     // Update progress text
     document.getElementById('timelineProgressText').textContent = 
         `Step ${currentStep} of 8 - ${stepText}`;
+}
+
+async function updateBoard() {
+    if (!currentProject) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/jira/board/${currentProject}`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const boardData = await response.json();
+        renderBoard(boardData);
+        
+    } catch (error) {
+        console.error('Failed to load board data:', error);
+        showBoardError('Failed to load board data: ' + error.message);
+    }
+}
+
+function renderBoard(boardData) {
+    const { board, counts } = boardData;
+    
+    // Update counts
+    document.getElementById('todoCount').textContent = counts.todo || 0;
+    document.getElementById('progressCount').textContent = counts.in_progress || 0;
+    document.getElementById('doneCount').textContent = counts.done || 0;
+    
+    // Render columns
+    renderBoardColumn('todoColumn', board.todo || [], 'No tasks to do');
+    renderBoardColumn('progressColumn', board.in_progress || [], 'No tasks in progress');
+    renderBoardColumn('doneColumn', board.done || [], 'No completed tasks');
+}
+
+function renderBoardColumn(columnId, issues, emptyMessage) {
+    const column = document.getElementById(columnId);
+    
+    if (!issues || issues.length === 0) {
+        column.innerHTML = `<div class="no-issues">${emptyMessage}</div>`;
+        return;
+    }
+    
+    column.innerHTML = issues.map(issue => `
+        <div class="issue-card" onclick="openIssueDetails('${issue.key}')">
+            <div class="issue-key">${issue.key}</div>
+            <div class="issue-summary">${issue.summary || 'No summary'}</div>
+            <div class="issue-meta">
+                <span class="issue-assignee">${issue.assignee}</span>
+                <div>
+                    <span class="issue-type">${issue.issuetype || 'Task'}</span>
+                    ${getPriorityDot(issue.priority)}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getPriorityDot(priority) {
+    if (!priority) return '';
+    
+    const priorityClass = getPriorityClass(priority.toLowerCase());
+    return `<span class="issue-priority ${priorityClass}" title="${priority}"></span>`;
+}
+
+function getPriorityClass(priority) {
+    switch(priority) {
+        case 'highest': return 'priority-highest';
+        case 'high': return 'priority-high';
+        case 'medium': return 'priority-medium';
+        case 'low': return 'priority-low';
+        case 'lowest': return 'priority-lowest';
+        default: return 'priority-medium';
+    }
+}
+
+function openIssueDetails(issueKey) {
+    // Open issue in new tab (you can customize this)
+    const jiraUrl = `https://uncia-team-vmevzjmu.atlassian.net/browse/${issueKey}`;
+    window.open(jiraUrl, '_blank');
+}
+
+function showBoardError(message) {
+    const columns = ['todoColumn', 'progressColumn', 'doneColumn'];
+    columns.forEach(columnId => {
+        const column = document.getElementById(columnId);
+        column.innerHTML = `<div class="no-issues">Error: ${message}</div>`;
+    });
 }
 
 function getStatusClass(status) {
