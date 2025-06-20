@@ -1,8 +1,9 @@
-.progress-section p {
+<!-- .progress-section p {
     color: #ffffff;
     font-weight: 600;
     font-size: 1.1rem;
-}<!DOCTYPE html>
+} -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -64,7 +65,10 @@ body {
 }
 
 .controls {
-    background: rgba(255, 255, 255, 0.95);
+    /* background: rgba(255, 255, 255, 0.95); */
+    background: #552E8C;
+    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    border: 1px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
@@ -75,20 +79,22 @@ body {
 .project-selector {
     display: flex;
     align-items: center;
+    background: #552E8C;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
 .project-selector label {
-    font-weight: 600;
-    color: #2d3748;
+    font-size: large;
+    font-weight: 900;
+    color: white;
 }
 
 .project-selector select {
     padding: 0.75rem 1rem;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    background: white;
+    background: White;
     font-size: 1rem;
     min-width: 200px;
     cursor: pointer;
@@ -353,7 +359,8 @@ body {
 }
 
 .recent-activity {
-    background: rgba(255, 255, 255, 0.95);
+    /* background: rgba(255, 255, 255, 0.95); */
+    background: #dcd0ee;
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
@@ -398,7 +405,7 @@ body {
 }
 
 .activity-content .issue-meta {
-    color: #718096;
+    color: #552E8C;
     font-size: 0.8rem;
 }
 
@@ -442,7 +449,8 @@ body {
 }
 
 .insights {
-    background: rgba(255, 255, 255, 0.95);
+    /* background: rgba(255, 255, 255, 0.95); */
+    background: #dcd0ee;
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
@@ -556,8 +564,7 @@ body {
 <div class="header">
     <img src="uncia_logo.png" alt="UNCIA Logo" style="height:48px; width:auto; display:block; margin-right:16px; background:transparent;"/>
     <div class="header-content">
-        <h1>🚀 UNCIA Jira Dashboard</h1>
-        <p>Real-time insights from your Jira projects</p>
+        <h1>UNCIA Jira Dashboard</h1>
     </div>
 </div>
 
@@ -609,7 +616,7 @@ body {
 
     <!-- Updated Project Timeline Section with UNCIA-specific steps -->
     <div class="timeline-section">
-        <h2>🚀 Project Implementation Timeline</h2>
+        <h2> Project Implementation Timeline</h2>
         <div class="timeline-container">
             <div class="timeline-step completed" data-step="1">
                 <div class="step-number">1</div>
