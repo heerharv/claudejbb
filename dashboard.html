@@ -54,16 +54,15 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 95vw;
     margin: 0 auto;
     padding: 2rem;
+    background: linear-gradient(135deg, #fafbff 0%, #f8fafc 100%);
+    min-height: calc(100vh - 120px);
 }
 
 .controls {
-    /* background: rgba(255, 255, 255, 0.95); */
-    background-color: #552E8C;
-    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
@@ -74,15 +73,13 @@ body {
 .project-selector {
     display: flex;
     align-items: center;
-    background: #552E8C;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
 .project-selector label {
-    font-size: large;
-    font-weight: 900;
-    color: White;
+    font-weight: 600;
+    color: #2d3748;
 }
 
 .project-selector select {
@@ -126,40 +123,50 @@ body {
 }
 
 .stat-card {
-    background: rgba(85, 46, 140, 0.8);
-    backdrop-filter: blur(20px);
+    background: #ffffff;
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+    border: 1px solid rgba(85, 46, 140, 0.1);
     transition: all 0.3s;
+    position: relative;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #552E8C, #7C3AED);
 }
 
 .stat-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(85, 46, 140, 0.5);
-    background: rgba(85, 46, 140, 0.9);
+    box-shadow: 0 12px 40px rgba(85, 46, 140, 0.2);
+    border-color: #552E8C;
 }
 
 .stat-card h3 {
-    color: rgba(255,255,255,0.9);
+    color: #552E8C;
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .stat-card .value {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    color: #552E8C;
 }
 
 .stat-card .label {
-    color: rgba(255,255,255,0.8);
+    color: #6b7280;
     font-size: 0.9rem;
 }
 
@@ -169,33 +176,45 @@ body {
 .todo .value { color: #F87171; }
 
 .progress-section {
-    background: rgba(85, 46, 140, 0.8);
-    backdrop-filter: blur(20px);
+    background: #ffffff;
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+    border: 1px solid rgba(85, 46, 140, 0.1);
+    position: relative;
+}
+
+.progress-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #552E8C, #7C3AED);
 }
 
 .progress-section h2 {
-    color: #ffffff;
+    color: #552E8C;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .progress-section p {
-    color: #ffffff;
+    color: #552E8C;
     font-weight: 600;
     font-size: 1.1rem;
 }
 
 .progress-bar-container {
-    background: rgba(255,255,255,0.2);
+    background: #f3f4f6;
     border-radius: 12px;
     height: 12px;
     overflow: hidden;
     margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
 }
 
 .progress-bar {
@@ -207,19 +226,30 @@ body {
 
 /* Timeline Styles */
 .timeline-section {
-    background: rgba(85, 46, 140, 0.8);
-    backdrop-filter: blur(20px);
+    background: #ffffff;
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
+    border: 1px solid rgba(85, 46, 140, 0.1);
+    position: relative;
+}
+
+.timeline-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #552E8C, #7C3AED);
 }
 
 .timeline-section h2 {
-    color: #ffffff;
+    color: #552E8C;
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .timeline-container {
@@ -288,21 +318,21 @@ body {
 }
 
 .step-content h4 {
-    color: #ffffff;
+    color: #552E8C;
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
 
 .step-content p {
-    color: rgba(255,255,255,0.8);
+    color: #6b7280;
     font-size: 0.7rem;
     line-height: 1.2;
 }
 
 .timeline-connector {
     height: 4px;
-    background: rgba(255,255,255,0.3);
+    background: #e5e7eb;
     flex: 1;
     margin: 0 10px;
     border-radius: 2px;
@@ -317,7 +347,7 @@ body {
 .timeline-progress-text {
     text-align: center;
     margin-top: 1rem;
-    color: #ffffff;
+    color: #552E8C;
     font-weight: 600;
 }
 
@@ -335,14 +365,25 @@ body {
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 8px 32px rgba(85, 46, 140, 0.4);
+    box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
     border: 1px solid rgba(255,255,255,0.2);
 }
 
+.board-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #552E8C, #7C3AED);
+}
+
 .board-section h2 {
-    color: #ffffff;
+    color: #fff;
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .kanban-board {
@@ -356,7 +397,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 16px rgba(85, 46, 140, 0.10), 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .column-header {
@@ -375,7 +416,7 @@ body {
 
 .progress-header {
     background: linear-gradient(135deg, #FBBF24, #F59E0B);
-    color: rgb(255, 255, 255);
+    color: white;
 }
 
 .done-header {
@@ -390,7 +431,7 @@ body {
 
 .issue-count {
     background: rgba(255,255,255,0.3);
-    color: rgb(255, 255, 255);
+    color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -401,7 +442,6 @@ body {
     padding: 1rem;
     max-height: 450px;
     overflow-y: auto;
-    background-color: #dcd0ee;
 }
 
 .issue-card {
@@ -412,7 +452,7 @@ body {
     margin-bottom: 0.75rem;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(85, 46, 140, 0.10), 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .issue-card:hover {
@@ -511,16 +551,6 @@ body {
     margin-bottom: 1rem;
     font-size: 1.25rem;
 }
-.recent-activity::-webkit-scrollbar {
-    width: 10px;
-    border-radius: 12px;
-    background: #e6d6f3;
-}
-
-.recent-activity::-webkit-scrollbar-thumb {
-    background: #b39ddb;
-    border-radius: 12px;
-}
 
 .recent-activity {
     background: #dcd0ee;
@@ -530,6 +560,17 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     max-height: 450px;
     overflow-y: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #b39ddb #e6d6f3; /* Firefox */
+}
+.recent-activity::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 12px;
+    background: #e6d6f3;
+}
+.recent-activity::-webkit-scrollbar-thumb {
+    background: #b39ddb;
+    border-radius: 12px;
 }
 
 .recent-activity h2 {
@@ -544,7 +585,7 @@ body {
     align-items: start;
     padding: 1rem;
     margin-bottom: 0.5rem;
-    background: #f7fafc;
+    background: #fff;
     border-radius: 8px;
     border-left: 4px solid #667eea;
 }
@@ -589,7 +630,7 @@ body {
 .loading {
     text-align: center;
     padding: 3rem;
-    color: #ffffff;
+    color: #552E8C;
     font-size: 1.2rem;
 }
 
@@ -614,12 +655,12 @@ body {
 }
 
 .insights {
-    background:#dcd0ee;
+    background: #dcd0ee;
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
     margin-top: 2rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
 }
 
 .insights h2 {
@@ -633,6 +674,7 @@ body {
     margin-bottom: 1rem;
     border-radius: 8px;
     border-left: 4px solid #38a169;
+    box-shadow: 0 2px 12px rgba(85, 46, 140, 0.10), 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .insight-warning { 
@@ -648,17 +690,6 @@ body {
 .insight-info { 
     background: #ebf8ff; 
     border-left-color: #3182ce; 
-}
-
-.placeholder {
-    color: #bbb;
-    text-align: center;
-    font-size: 1.1rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
 }
 
 @media (max-width: 768px) {
@@ -815,7 +846,7 @@ body {
 
     <!-- Updated Project Timeline Section with UNCIA-specific steps -->
     <div class="timeline-section">
-        <h2>🚀 Project Implementation Timeline</h2>
+        <h2>Project Implementation Timeline</h2>
         <div class="timeline-container">
             <div class="timeline-step completed" data-step="1">
                 <div class="step-number">1</div>
@@ -1108,7 +1139,7 @@ function updateStatusChart(statusCounts) {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#ffffff',
+                            color: '#374151',
                             padding: 20,
                             usePointStyle: true,
                             font: {
@@ -1154,7 +1185,7 @@ function updateStatusChart(statusCounts) {
                             const centerX = arc.x;
                             const centerY = arc.y;
                             
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#374151';
                             ctx.font = 'bold 14px Arial';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
@@ -1174,7 +1205,7 @@ function updateStatusChart(statusCounts) {
         console.log('Status chart created successfully:', window.statusChart);
     } else {
         console.log('No data available for status chart');
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#6b7280';
         ctx.font = '16px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
@@ -1232,7 +1263,7 @@ function updateAssignmentChart(assigneeDistribution, totalIssues) {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#ffffff',
+                            color: '#374151',
                             padding: 20,
                             usePointStyle: true,
                             font: {
@@ -1265,7 +1296,7 @@ function updateAssignmentChart(assigneeDistribution, totalIssues) {
                             const centerX = arc.x;
                             const centerY = arc.y;
                             
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#374151';
                             ctx.font = 'bold 14px Arial';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
@@ -1285,7 +1316,7 @@ function updateAssignmentChart(assigneeDistribution, totalIssues) {
         console.log('Assignment chart created successfully:', window.assignmentChart);
     } else {
         console.log('No data available for assignment chart');
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = '#6b7280';
         ctx.font = '16px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);

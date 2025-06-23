@@ -291,7 +291,7 @@ def get_project_dashboard(project_key):
         recent_params = {
             "jql": f"project = {project_key} ORDER BY updated DESC",
             "maxResults": 50,
-            "fields": ["summary", "status", "assignee", "updated", "issuetype"]
+            "fields": ["summary", "status", "assignee", "updated", "issuetype", "duedate"]
         }
         recent_response = requests.get(search_url, headers=get_jira_headers(), auth=get_jira_auth(), params=recent_params)
         
@@ -305,7 +305,8 @@ def get_project_dashboard(project_key):
                     "status": fields.get('status', {}).get('name'),
                     "assignee": fields.get('assignee', {}).get('displayName') if fields.get('assignee') else "Unassigned",
                     "updated": fields.get('updated'),
-                    "issuetype": fields.get('issuetype', {}).get('name')
+                    "issuetype": fields.get('issuetype', {}).get('name'),
+                    "duedate": fields.get('duedate')
                 })
         
         # Get assignee distribution
@@ -347,7 +348,7 @@ def get_project_board(project_key):
         params = {
             "jql": f"project = {project_key} ORDER BY updated DESC",
             "maxResults": 100,
-            "fields": ["summary", "status", "assignee", "updated", "issuetype", "priority"]
+            "fields": ["summary", "status", "assignee", "updated", "issuetype", "priority", "duedate"]
         }
         
         response = requests.get(search_url, headers=get_jira_headers(), auth=get_jira_auth(), params=params)
@@ -374,7 +375,8 @@ def get_project_board(project_key):
                     "assignee": fields.get('assignee', {}).get('displayName') if fields.get('assignee') else "Unassigned",
                     "updated": fields.get('updated'),
                     "issuetype": fields.get('issuetype', {}).get('name'),
-                    "priority": fields.get('priority', {}).get('name') if fields.get('priority') else None
+                    "priority": fields.get('priority', {}).get('name') if fields.get('priority') else None,
+                    "duedate": fields.get('duedate')
                 }
                 
                 board_data[category].append(issue_data)
