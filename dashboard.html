@@ -229,10 +229,11 @@ body {
     background: #ffffff;
     border-radius: 16px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
     box-shadow: 0 4px 24px rgba(85, 46, 140, 0.18), 0 1.5px 6px rgba(0,0,0,0.08);
     border: 1px solid rgba(85, 46, 140, 0.1);
     position: relative;
+    max-width: 1200px;
 }
 
 .calendar-section::before {
@@ -263,6 +264,7 @@ body {
     border-radius: 12px;
     padding: 1rem;
     border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .calendar-header {
@@ -332,6 +334,8 @@ body {
 .calendar-day:hover {
     background: rgba(85, 46, 140, 0.1);
     border-color: #552E8C;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .calendar-day.other-month {
@@ -389,6 +393,7 @@ body {
     border: 1px solid #e2e8f0;
     max-height: 400px;
     overflow-y: auto;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .daily-tasks h3 {
@@ -412,11 +417,13 @@ body {
     padding: 1rem;
     border: 1px solid #e2e8f0;
     transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .task-item:hover {
     border-color: #552E8C;
-    box-shadow: 0 2px 8px rgba(85, 46, 140, 0.1);
+    box-shadow: 0 8px 20px rgba(85, 46, 140, 0.25);
+    transform: translateY(-2px);
 }
 
 .task-key {
@@ -654,17 +661,17 @@ body {
 }
 
 .todo-header {
-    background: linear-gradient(135deg, #F87171, #EF4444);
+    background: linear-gradient(135deg, #9370DB, #8A2BE2);
     color: white;
 }
 
 .progress-header {
-    background: linear-gradient(135deg, #FBBF24, #F59E0B);
+    background: linear-gradient(135deg, #6B46C1, #552E8C);
     color: white;
 }
 
 .done-header {
-    background: linear-gradient(135deg, #34D399, #10B981);
+    background: linear-gradient(135deg, #552E8C, #483D8B);
     color: white;
 }
 
