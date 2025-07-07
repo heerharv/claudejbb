@@ -353,34 +353,21 @@ def get_project_dashboard(project_key):
 
 @app.route('/api/jira/board/<project_key>')
 def get_project_board(project_key):
-    """Get project board data organized by status columns"""
+    """Get project board data organized by real Jira status columns"""
     try:
         search_url = f"https://{JIRA_DOMAIN}/rest/api/3/search"
-        
-        # Get all issues for the board
         params = {
             "jql": f"project = {project_key} ORDER BY updated DESC",
             "maxResults": 100,
             "fields": ["summary", "status", "assignee", "updated", "issuetype", "priority", "duedate"]
         }
-        
         response = requests.get(search_url, headers=get_jira_headers(), auth=get_jira_auth(), params=params)
-        
         if response.status_code == 200:
             issues = response.json().get('issues', [])
-            
-            # Organize issues by status category
-            board_data = {
-                'todo': [],
-                'in_progress': [],
-                'done': []
-            }
-            
+            board_data = {}
             for issue in issues:
                 fields = issue.get('fields', {})
-                status_name = fields.get('status', {}).get('name', '')
-                category = categorize_status(status_name)
-                
+                status_name = fields.get('status', {}).get('name', 'Unknown')
                 issue_data = {
                     "key": issue.get('key'),
                     "summary": fields.get('summary'),
@@ -391,24 +378,12 @@ def get_project_board(project_key):
                     "priority": fields.get('priority', {}).get('name') if fields.get('priority') else None,
                     "duedate": fields.get('duedate')
                 }
-                
-                board_data[category].append(issue_data)
-            
-            # Limit to 10 issues per column
-            for category in board_data:
-                board_data[category] = board_data[category][:10]
-            
-            return jsonify({
-                "board": board_data,
-                "counts": {
-                    "todo": len([i for i in issues if categorize_status(i.get('fields', {}).get('status', {}).get('name', '')) == 'todo']),
-                    "in_progress": len([i for i in issues if categorize_status(i.get('fields', {}).get('status', {}).get('name', '')) == 'in_progress']),
-                    "done": len([i for i in issues if categorize_status(i.get('fields', {}).get('status', {}).get('name', '')) == 'done'])
-                }
-            })
+                if status_name not in board_data:
+                    board_data[status_name] = []
+                board_data[status_name].append(issue_data)
+            return jsonify({"board": board_data})
         else:
             return jsonify({"error": f"Failed to fetch board data: {response.text}"}), response.status_code
-            
     except Exception as e:
         return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
 

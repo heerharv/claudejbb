@@ -136,7 +136,7 @@ body::after {
 }
 
 .create-risk-btn {
-    background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+    background: linear-gradient(135deg, #6B46C1 0%, #7C3AED 100%);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -151,7 +151,7 @@ body::after {
 
 .create-risk-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
 }
 
 .stats-grid {
@@ -219,11 +219,11 @@ body::after {
 
 /* Risk Management Section */
 .risk-management-section {
-    background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+    background: linear-gradient(135deg, #6B46C1 0%, #7C3AED 100%);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 24px rgba(220, 38, 38, 0.18);
+    box-shadow: 0 4px 24px rgba(107, 70, 193, 0.18);
     border: 1px solid rgba(255,255,255,0.2);
 }
 
@@ -765,7 +765,7 @@ body::after {
 
 .kanban-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 1.5rem;
     min-height: 500px;
 }
@@ -1804,6 +1804,9 @@ body::after {
         </div>
     </div>
 
+    <!-- Project Timeline Steps Summary -->
+    <!-- REMOVED: Timeline steps summary as per user request -->
+
     <!-- Enhanced Board Section -->
     <div class="board-section">
         <h2>📋 Project Board 
@@ -1814,31 +1817,66 @@ body::after {
         <div class="kanban-board" id="mainBoard">
             <div class="kanban-column">
                 <div class="column-header todo-header">
-                    <h3>📝 To Do</h3>
-                    <span class="issue-count" id="todoCount">0</span>
+                    <h3>1. Take Over</h3>
                 </div>
-                <div class="column-content" id="todoColumn">
-                    <div class="loading-board">Loading issues...</div>
+                <div class="column-content" id="phase-takeover">
+                    <!-- Tasks for Take Over phase -->
                 </div>
             </div>
-            
+            <div class="kanban-column">
+                <div class="column-header todo-header">
+                    <h3>2. Day 0</h3>
+                </div>
+                <div class="column-content" id="phase-day0">
+                    <!-- Tasks for Day 0 phase -->
+                </div>
+            </div>
             <div class="kanban-column">
                 <div class="column-header progress-header">
-                    <h3>🔄 In Progress</h3>
-                    <span class="issue-count" id="progressCount">0</span>
+                    <h3>3. GO LIVE INITIATION</h3>
                 </div>
-                <div class="column-content" id="progressColumn">
-                    <div class="loading-board">Loading issues...</div>
+                <div class="column-content" id="phase-goliveinitiation">
+                    <!-- Tasks for GO LIVE INITIATION phase -->
                 </div>
             </div>
-            
+            <div class="kanban-column">
+                <div class="column-header progress-header">
+                    <h3>4. Readiness for Day !</h3>
+                </div>
+                <div class="column-content" id="phase-readinessday">
+                    <!-- Tasks for Readiness for Day ! phase -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <div class="column-header progress-header">
+                    <h3>5. Solution Design</h3>
+                </div>
+                <div class="column-content" id="phase-solutiondesign">
+                    <!-- Tasks for Solution Design phase -->
+                </div>
+            </div>
             <div class="kanban-column">
                 <div class="column-header done-header">
-                    <h3>✅ Done</h3>
-                    <span class="issue-count" id="doneCount">0</span>
+                    <h3>6. Reports</h3>
                 </div>
-                <div class="column-content" id="doneColumn">
-                    <div class="loading-board">Loading issues...</div>
+                <div class="column-content" id="phase-reports">
+                    <!-- Tasks for Reports phase -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <div class="column-header done-header">
+                    <h3>7. Readiness for Go Live</h3>
+                </div>
+                <div class="column-content" id="phase-readinessgolive">
+                    <!-- Tasks for Readiness for Go Live phase -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <div class="column-header done-header">
+                    <h3>8. GO LIVE</h3>
+                </div>
+                <div class="column-content" id="phase-golive">
+                    <!-- Tasks for GO LIVE phase -->
                 </div>
             </div>
         </div>
@@ -1948,7 +1986,7 @@ body::after {
                 <button type="submit" class="btn btn-primary">Create Risk Report</button>
             </div>
         </form>
-    </div>
+</div>
 </div>
 
 <script>
@@ -2197,15 +2235,15 @@ function updateIntegratedStatusChart(statusCounts, riskAnalytics) {
         (riskAnalytics?.by_status?.["Closed"] || 0) + (riskAnalytics?.by_status?.["Done"] || 0)
     ];
     
-    window.statusChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['To Do', 'In Progress', 'Done'],
-            datasets: [{
+        window.statusChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['To Do', 'In Progress', 'Done'],
+                datasets: [{
                 label: 'Project Tasks',
                 data: projectData,
                 backgroundColor: ['#F87171', '#FBBF24', '#34D399'],
-                borderWidth: 3,
+                    borderWidth: 3,
                 borderColor: '#ffffff'
             }, {
                 label: 'Risk Items',
@@ -2213,14 +2251,14 @@ function updateIntegratedStatusChart(statusCounts, riskAnalytics) {
                 backgroundColor: ['#FCA5A5', '#FCD34D', '#6EE7B7'],
                 borderWidth: 2,
                 borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
                     labels: { color: '#374151', padding: 20 }
                 },
                 tooltip: {
@@ -2229,12 +2267,12 @@ function updateIntegratedStatusChart(statusCounts, riskAnalytics) {
                             const datasetLabel = context.dataset.label;
                             const value = context.parsed;
                             return `${datasetLabel} - ${context.label}: ${value}`;
+                            }
                         }
                     }
                 }
             }
-        }
-    });
+        });
 }
 
 function updateRiskDistributionChart(riskAnalytics) {
@@ -2385,7 +2423,7 @@ function updateIntegratedRecentActivity(projectIssues, riskIssues) {
                     <span class="activity-type">${item.icon}</span>
                     <a href="#" class="issue-key-link">${item.key}</a>
                     <span class="status-badge ${statusClass}">${item.status}</span>
-                </div>
+                    </div>
                 <p class="activity-summary">${item.summary}</p>
                 <div class="activity-meta">
                     <span>${item.assignee || 'Unassigned'}</span>
@@ -2538,40 +2576,61 @@ async function updateBoard() {
 }
 
 function renderProjectBoard(boardData) {
-    const { board, counts } = boardData;
-    
+    const board = boardData.board;
     const boardContainer = document.getElementById('mainBoard');
-    boardContainer.innerHTML = `
-        <div class="kanban-column">
-            <div class="column-header todo-header">
-                <h3>📝 To Do</h3>
-                <span class="issue-count">${counts.todo || 0}</span>
-            </div>
-            <div class="column-content">
-                ${renderBoardColumn(board.todo || [], 'No tasks to do')}
-            </div>
-        </div>
-        
-        <div class="kanban-column">
-            <div class="column-header progress-header">
-                <h3>🔄 In Progress</h3>
-                <span class="issue-count">${counts.in_progress || 0}</span>
-            </div>
-            <div class="column-content">
-                ${renderBoardColumn(board.in_progress || [], 'No tasks in progress')}
-            </div>
-        </div>
-        
-        <div class="kanban-column">
-            <div class="column-header done-header">
-                <h3>✅ Done</h3>
-                <span class="issue-count">${counts.done || 0}</span>
-            </div>
-            <div class="column-content">
-                ${renderBoardColumn(board.done || [], 'No completed tasks')}
-            </div>
-        </div>
-    `;
+    boardContainer.innerHTML = '';
+    // Preferred order of columns (add/remove as needed)
+    const preferredOrder = [
+        'Backlog',
+        'TAKE OVER FORM',
+        'DAY 0 INITIATION',
+        'READINESS FOR ...',
+        'SOLUTION DESIGN',
+        'IN PROGRESS',
+        'DATA MIGRATION',
+        'REPORTS',
+        'EXTRAS',
+        'GO LIVE INITIATION',
+        'GO LIVE',
+        'COMPLETED',
+        'Done'
+    ];
+    // Render columns in preferred order, then any others
+    const rendered = new Set();
+    preferredOrder.forEach(statusName => {
+        if (board[statusName]) {
+            const issues = board[statusName];
+            boardContainer.innerHTML += `
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <h3>${statusName}</h3>
+                        <span class="issue-count">${issues.length}</span>
+                    </div>
+                    <div class="column-content">
+                        ${renderBoardColumn(issues, 'No tasks in this column')}
+                    </div>
+                </div>
+            `;
+            rendered.add(statusName);
+        }
+    });
+    // Render any columns not in preferredOrder
+    Object.keys(board).forEach(statusName => {
+        if (!rendered.has(statusName)) {
+            const issues = board[statusName];
+            boardContainer.innerHTML += `
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <h3>${statusName}</h3>
+                        <span class="issue-count">${issues.length}</span>
+                    </div>
+                    <div class="column-content">
+                        ${renderBoardColumn(issues, 'No tasks in this column')}
+                    </div>
+                </div>
+            `;
+        }
+    });
 }
 
 function renderBoardColumn(issues, emptyMessage) {
