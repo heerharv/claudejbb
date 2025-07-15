@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNCIA Settings</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body id="settings-page">
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; margin-bottom:24px;"/>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item"><a href="dashboard.html"><span class="sidebar-icon">🏠</span> Dashboard</a></li>
+            <li class="sidebar-nav-item"><a href="kanban.html"><span class="sidebar-icon">🗂️</span> Kanban Board</a></li>
+            <li class="sidebar-nav-item"><a href="timeline.html"><span class="sidebar-icon">🕒</span> Timeline</a></li>
+            <li class="sidebar-nav-item"><a href="risk.html"><span class="sidebar-icon">⚠️</span> Risk Management</a></li>
+            <li class="sidebar-nav-item active"><a href="settings.html"><span class="sidebar-icon">⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">N</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Heerha</div>
+                    <div class="sidebar-user-role">Project Manager</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
+            <div class="header-content">
+                <h1>UNCIA Settings</h1>
+                <p>Profile, Notifications, Integrations, Dashboard, Theme</p>
+            </div>
+        </div>
+        <div class="settings-page-content">
+            <div class="settings-modal-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+            <div class="settings-tabs">
+                <button class="settings-tab active" onclick="showSettingsTab('profile')">Profile</button>
+                <button class="settings-tab" onclick="showSettingsTab('notifications')">Notifications</button>
+                <button class="settings-tab" onclick="showSettingsTab('integrations')">Integrations</button>
+                <button class="settings-tab" onclick="showSettingsTab('dashboard')">Dashboard</button>
+                <button class="settings-tab" onclick="showSettingsTab('theme')">Theme</button>
+            </div>
+            <div class="settings-tab-content" id="settingsTabProfile">
+                <h3>Profile</h3>
+                <label>Name: <input type="text" id="profileName" placeholder="Your name"></label><br>
+                <label>Email: <input type="email" id="profileEmail" placeholder="Your email"></label><br>
+                <label>Avatar: <input type="file" id="profileAvatar"></label>
+            </div>
+            <div class="settings-tab-content" id="settingsTabNotifications" style="display:none;">
+                <h3>Notifications</h3>
+                <label><input type="checkbox" id="notifyTeams" checked> Teams overdue alerts</label><br>
+                <label><input type="checkbox" id="notifyEmail"> Email risk alerts</label>
+            </div>
+            <div class="settings-tab-content" id="settingsTabIntegrations" style="display:none;">
+                <h3>Integrations</h3>
+                <label>Jira Domain: <input type="text" id="jiraDomain" placeholder="your-domain.atlassian.net"></label><br>
+                <label>API Token: <input type="password" id="jiraToken" placeholder="Jira API Token"></label><br>
+                <label>Teams Webhook: <input type="text" id="teamsWebhook" placeholder="Teams Webhook URL"></label>
+            </div>
+            <div class="settings-tab-content" id="settingsTabDashboard" style="display:none;">
+                <h3>Dashboard</h3>
+                <label><input type="checkbox" id="showOverdueTasks" checked> Show Overdue Tasks</label><br>
+                <label><input type="checkbox" id="showRiskBoard" checked> Show Risk Board</label><br>
+                <label>Default Project: <select id="defaultProject"><option>SCRUM</option><option>KANS</option></select></label>
+            </div>
+            <div class="settings-tab-content" id="settingsTabTheme" style="display:none;">
+                <h3>Theme</h3>
+                <label><input type="radio" name="theme" value="light" checked> Light</label>
+                <label><input type="radio" name="theme" value="dark"> Dark</label>
+            </div>
+            <div class="settings-modal-actions">
+                <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+                <button class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/dashboard.js"></script>
+<script>
+function showSettingsTab(tab) {
+  document.querySelectorAll('.settings-tab').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.settings-tab-content').forEach(div => div.style.display = 'none');
+  document.querySelector('.settings-tab[onclick*="' + tab + '"]').classList.add('active');
+  document.getElementById('settingsTab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = '';
+}
+function saveSettings() {
+  alert('Settings saved! (Demo)');
+}
+</script>
+</body>
+</html> 

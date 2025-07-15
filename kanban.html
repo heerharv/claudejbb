@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNCIA Kanban Board</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body id="kanban-page">
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; margin-bottom:24px;"/>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item"><a href="dashboard.html"><span class="sidebar-icon">🏠</span> Dashboard</a></li>
+            <li class="sidebar-nav-item active"><a href="kanban.html"><span class="sidebar-icon">🗂️</span> Kanban Board</a></li>
+            <li class="sidebar-nav-item"><a href="timeline.html"><span class="sidebar-icon">🕒</span> Timeline</a></li>
+            <li class="sidebar-nav-item"><a href="risk.html"><span class="sidebar-icon">⚠️</span> Risk Management</a></li>
+            <li class="sidebar-nav-item"><a href="settings.html"><span class="sidebar-icon">⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">N</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Heerha</div>
+                    <div class="sidebar-user-role">Project Manager</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
+            <div class="header-content">
+                <h1>UNCIA Kanban Board</h1>
+                <p>Project Phase Task Management</p>
+            </div>
+        </div>
+        <div class="controls" style="margin-bottom: 1rem;">
+            <label for="projectSelect"><strong>Select Project:</strong></label>
+            <select id="projectSelect" style="margin-left: 8px;"></select>
+        </div>
+        <div class="board-section">
+            <h2>📋 Project Board</h2>
+            <div class="kanban-board" id="mainBoard">
+                <div class="kanban-column">
+                    <div class="column-header todo-header">
+                        <h3>1. Take Over</h3>
+                    </div>
+                    <div class="column-content" id="phase-takeover">
+                        <!-- Tasks for Take Over phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header todo-header">
+                        <h3>2. Day 0</h3>
+                    </div>
+                    <div class="column-content" id="phase-day0">
+                        <!-- Tasks for Day 0 phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header progress-header">
+                        <h3>3. GO LIVE INITIATION</h3>
+                    </div>
+                    <div class="column-content" id="phase-goliveinitiation">
+                        <!-- Tasks for GO LIVE INITIATION phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header progress-header">
+                        <h3>4. Readiness for Day !</h3>
+                    </div>
+                    <div class="column-content" id="phase-readinessday">
+                        <!-- Tasks for Readiness for Day ! phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header progress-header">
+                        <h3>5. Solution Design</h3>
+                    </div>
+                    <div class="column-content" id="phase-solutiondesign">
+                        <!-- Tasks for Solution Design phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header done-header">
+                        <h3>6. Reports</h3>
+                    </div>
+                    <div class="column-content" id="phase-reports">
+                        <!-- Tasks for Reports phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header done-header">
+                        <h3>7. Readiness for Go Live</h3>
+                    </div>
+                    <div class="column-content" id="phase-readinessgolive">
+                        <!-- Tasks for Readiness for Go Live phase -->
+                    </div>
+                </div>
+                <div class="kanban-column">
+                    <div class="column-header done-header">
+                        <h3>8. GO LIVE</h3>
+                    </div>
+                    <div class="column-content" id="phase-golive">
+                        <!-- Tasks for GO LIVE phase -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/dashboard.js"></script>
+</body>
+</html> 

@@ -5,6 +5,85 @@ from requests.auth import HTTPBasicAuth
 import json
 from datetime import datetime, timedelta
 
+# --- Teams Notification Automation ---
+import requests
+from apscheduler.schedulers.background import BackgroundScheduler
+
+TEAMS_WEBHOOK_URL = "https://themeprotechnologies.webhook.office.com/webhookb2/b31aa592-7173-4f96-b1d6-6bed169a31ca@b7323e06-fd04-4680-8f02-7720b587ec22/IncomingWebhook/b31899c36a5340f4a829bbb0239d4ef9/e8d19640-6c16-44fd-aae7-4bd1802d113c/V2CalovyZ-m6tklMkVP3LVtgMkEpnWEIkdC-YkpFipfGE1"
+
+def send_teams_notification(webhook_url, title, message):
+    payload = {
+        "@type": "MessageCard",
+        "@context": "http://schema.org/extensions",
+        "summary": title,
+        "themeColor": "FF0000",
+        "title": title,
+        "text": message
+    }
+    response = requests.post(webhook_url, json=payload)
+    return response.status_code == 200
+
+def get_overdue_tasks():
+    # Fetch all projects
+    projects_url = f"https://{JIRA_DOMAIN}/rest/api/3/project/search"
+    projects_response = requests.get(projects_url, headers=get_jira_headers(), auth=get_jira_auth())
+    if projects_response.status_code != 200:
+        return []
+    projects = projects_response.json().get('values', [])
+    overdue = []
+    for project in projects:
+        project_key = project.get('key')
+        if not project_key:
+            continue
+        # Fetch all issues for this project
+        issues_url = f"https://{JIRA_DOMAIN}/rest/api/3/search"
+        jql_query = f"project = {project_key} ORDER BY created DESC"
+        params = {
+            "jql": jql_query,
+            "maxResults": 100,
+            "fields": [
+                "summary",
+                "status",
+                "assignee",
+                "duedate",
+                "key"
+            ]
+        }
+        response = requests.get(issues_url, headers=get_jira_headers(), auth=get_jira_auth(), params=params)
+        if response.status_code != 200:
+            continue
+        issues = response.json().get('issues', [])
+        for issue in issues:
+            fields = issue.get('fields', {})
+            due_date = fields.get('duedate')
+            status = fields.get('status', {}).get('name', '').lower()
+            if due_date and status not in ['done', 'closed', 'resolved']:
+                try:
+                    due = datetime.strptime(due_date, '%Y-%m-%d')
+                    if due < datetime.now():
+                        days_overdue = (datetime.now() - due).days
+                        overdue.append({
+                            'summary': fields.get('summary', 'No summary'),
+                            'days_overdue': days_overdue,
+                            'assignee': fields.get('assignee', {}).get('displayName', 'Unassigned') if fields.get('assignee') else 'Unassigned',
+                            'url': f'https://{JIRA_DOMAIN}/browse/{issue.get("key")}'
+                        })
+                except Exception:
+                    continue
+    return overdue
+
+def check_and_notify_overdue_tasks():
+    overdue_tasks = get_overdue_tasks()
+    for task in overdue_tasks:
+        title = f"Overdue Task: {task['summary']}"
+        message = f"Task **{task['summary']}** is overdue by {task['days_overdue']} days. Assignee: {task['assignee']}."
+        send_teams_notification(TEAMS_WEBHOOK_URL, title, message)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(check_and_notify_overdue_tasks, 'interval', minutes=60)  # Check every hour
+scheduler.start()
+# --- End Teams Notification Automation ---
+
 app = Flask(__name__)
 CORS(app)  # Enables CORS for all routes
 
@@ -199,6 +278,9 @@ def get_project_issues(project_key):
                     },
                     "created": fields.get('created'),
                     "updated": fields.get('updated'),
+                    "start_date": fields.get('created'),
+                    "end_date": fields.get('duedate'),
+                    "assignee_name": fields.get('assignee', {}).get('displayName') if fields.get('assignee') else "Unassigned",
                     "labels": fields.get('labels', []),
                     "components": [comp.get('name') for comp in fields.get('components', [])],
                     "fixVersions": [version.get('name') for version in fields.get('fixVersions', [])],
@@ -353,13 +435,13 @@ def get_project_dashboard(project_key):
 
 @app.route('/api/jira/board/<project_key>')
 def get_project_board(project_key):
-    """Get project board data organized by real Jira status columns"""
+    """Get project board data organized by real Jira status columns, including comments as plain text"""
     try:
         search_url = f"https://{JIRA_DOMAIN}/rest/api/3/search"
         params = {
             "jql": f"project = {project_key} ORDER BY updated DESC",
             "maxResults": 100,
-            "fields": ["summary", "status", "assignee", "updated", "issuetype", "priority", "duedate"]
+            "fields": ["summary", "status", "assignee", "updated", "created", "issuetype", "priority", "duedate", "comment"]
         }
         response = requests.get(search_url, headers=get_jira_headers(), auth=get_jira_auth(), params=params)
         if response.status_code == 200:
@@ -368,15 +450,26 @@ def get_project_board(project_key):
             for issue in issues:
                 fields = issue.get('fields', {})
                 status_name = fields.get('status', {}).get('name', 'Unknown')
+                # --- Extract comments as plain text ---
+                comments = []
+                for c in fields.get('comment', {}).get('comments', []):
+                    comments.append({
+                        "author": c.get('author', {}).get('displayName', 'Unknown'),
+                        "body": extract_comment_text(c.get('body', '')),
+                        "created": c.get('created')
+                    })
                 issue_data = {
                     "key": issue.get('key'),
                     "summary": fields.get('summary'),
                     "status": status_name,
                     "assignee": fields.get('assignee', {}).get('displayName') if fields.get('assignee') else "Unassigned",
+                    "assignee_name": fields.get('assignee', {}).get('displayName') if fields.get('assignee') else "Unassigned",
                     "updated": fields.get('updated'),
+                    "created": fields.get('created'),
                     "issuetype": fields.get('issuetype', {}).get('name'),
                     "priority": fields.get('priority', {}).get('name') if fields.get('priority') else None,
-                    "duedate": fields.get('duedate')
+                    "duedate": fields.get('duedate'),
+                    "comments": comments
                 }
                 if status_name not in board_data:
                     board_data[status_name] = []
@@ -1011,6 +1104,65 @@ def calculate_risk_velocity(risk_data):
     # Mock implementation
     return "1.2 risks/week"
 
+@app.route('/api/announce-overdue', methods=['POST'])
+def announce_overdue_tasks():
+    """Manually trigger overdue task announcement to Teams"""
+    try:
+        overdue_tasks = get_overdue_tasks()
+        if not overdue_tasks:
+            return jsonify({
+                "status": "success",
+                "message": "No overdue tasks found to announce.",
+                "announced": 0
+            })
+        count = 0
+        for task in overdue_tasks:
+            title = f"Overdue Task: {task['summary']}"
+            message = f"Task **{task['summary']}** is overdue by {task['days_overdue']} days. Assignee: {task['assignee']}."
+            if send_teams_notification(TEAMS_WEBHOOK_URL, title, message):
+                count += 1
+        return jsonify({
+            "status": "success",
+            "message": f"Announced {count} overdue tasks to Teams.",
+            "announced": count
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Failed to announce overdue tasks: {str(e)}"
+        }), 500
+
+@app.route('/api/announce-overdue-task/<issue_key>', methods=['POST'])
+def announce_single_overdue_task(issue_key):
+    """Manually trigger overdue task announcement for a specific Jira issue key"""
+    try:
+        # Find the overdue task by issue_key
+        overdue_tasks = get_overdue_tasks()
+        task = next((t for t in overdue_tasks if t.get('url', '').endswith(issue_key)), None)
+        if not task:
+            return jsonify({
+                "status": "error",
+                "message": f"No overdue task found with key {issue_key}."
+            }), 404
+        title = f"Overdue Task: {task['summary']}"
+        message = f"Task **{task['summary']}** is overdue by {task['days_overdue']} days. Assignee: {task['assignee']}."
+        sent = send_teams_notification(TEAMS_WEBHOOK_URL, title, message)
+        if sent:
+            return jsonify({
+                "status": "success",
+                "message": f"Notification sent for overdue task {issue_key}."
+            })
+        else:
+            return jsonify({
+                "status": "error",
+                "message": f"Failed to send notification for task {issue_key}."
+            }), 500
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Exception: {str(e)}"
+        }), 500
+
 @app.route('/api/risk/update/<issue_key>', methods=['PUT'])
 def update_risk_ticket(issue_key):
     """Update an existing risk ticket"""
@@ -1078,6 +1230,22 @@ def get_jira_issues():
             
     except Exception as e:
         return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
+
+def extract_comment_text(body):
+    # Try to extract plain text from Atlassian Document Format
+    if isinstance(body, str):
+        return body
+    if isinstance(body, dict):
+        try:
+            return ' '.join(
+                node['text']
+                for block in body.get('content', [])
+                for node in block.get('content', [])
+                if 'text' in node
+            )
+        except Exception:
+            return str(body)
+    return str(body)
 
 if __name__ == '__main__':
     print("🚀 Starting UNCIA Jira Dashboard Flask App with Risk Management...")

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNCIA Project Timeline</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body id="timeline-page">
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; margin-bottom:24px;"/>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item"><a href="dashboard.html"><span class="sidebar-icon">🏠</span> Dashboard</a></li>
+            <li class="sidebar-nav-item"><a href="kanban.html"><span class="sidebar-icon">🗂️</span> Kanban Board</a></li>
+            <li class="sidebar-nav-item active"><a href="timeline.html"><span class="sidebar-icon">🕒</span> Timeline</a></li>
+            <li class="sidebar-nav-item"><a href="risk.html"><span class="sidebar-icon">⚠️</span> Risk Management</a></li>
+            <li class="sidebar-nav-item"><a href="settings.html"><span class="sidebar-icon">⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">N</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Heerha</div>
+                    <div class="sidebar-user-role">Project Manager</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
+            <div class="header-content">
+                <h1>UNCIA Project Timeline</h1>
+                <p>Project Implementation Phases</p>
+            </div>
+        </div>
+        <div class="timeline-section">
+            <h2>Project Implementation Timeline</h2>
+            <div class="timeline-container">
+                <div class="timeline-step completed" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Take Over</h4>
+                        <p>Project handover & onboarding</p>
+                    </div>
+                </div>
+                <div class="timeline-connector completed"></div>
+                <div class="timeline-step completed" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Day 0</h4>
+                        <p>Initial setup & kickoff</p>
+                    </div>
+                </div>
+                <div class="timeline-connector completed"></div>
+                <div class="timeline-step current" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>GO LIVE INTIATION</h4>
+                        <p>First deployment</p>
+                    </div>
+                </div>
+                <div class="timeline-connector"></div>
+                <div class="timeline-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Readiness for Day !</h4>
+                        <p>Preparation phase</p>
+                    </div>
+                </div>
+                <div class="timeline-connector"></div>
+                <div class="timeline-step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Solution Design</h4>
+                        <p>Architecture & planning</p>
+                    </div>
+                </div>
+                <div class="timeline-connector"></div>
+                <div class="timeline-step" data-step="6">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h4>Reports</h4>
+                        <p>Documentation & analysis</p>
+                    </div>
+                </div>
+                <div class="timeline-connector"></div>
+                <div class="timeline-step" data-step="7">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h4>Readiness for Go Live</h4>
+                        <p>Final preparation</p>
+                    </div>
+                </div>
+                <div class="timeline-connector"></div>
+                <div class="timeline-step" data-step="8">
+                    <div class="step-number">8</div>
+                    <div class="step-content">
+                        <h4>GO LIVE</h4>
+                        <p>Production launch</p>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-progress-text">
+                <span id="timelineProgressText">Step 3 of 8 - GO LIVE INTIATION Phase</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/dashboard.js"></script>
+</body>
+</html> 

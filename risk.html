@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNCIA Risk Management</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body id="risk-page">
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; margin-bottom:24px;"/>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item"><a href="dashboard.html"><span class="sidebar-icon">🏠</span> Dashboard</a></li>
+            <li class="sidebar-nav-item"><a href="kanban.html"><span class="sidebar-icon">🗂️</span> Kanban Board</a></li>
+            <li class="sidebar-nav-item"><a href="timeline.html"><span class="sidebar-icon">🕒</span> Timeline</a></li>
+            <li class="sidebar-nav-item active"><a href="risk.html"><span class="sidebar-icon">⚠️</span> Risk Management</a></li>
+            <li class="sidebar-nav-item"><a href="settings.html"><span class="sidebar-icon">⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">N</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Heerha</div>
+                    <div class="sidebar-user-role">Project Manager</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
+            <div class="header-content">
+                <h1>UNCIA Risk Management</h1>
+                <p>Risk Dashboard & Analytics</p>
+            </div>
+        </div>
+        <div class="risk-management-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>🚨 Risk Management Dashboard</h2>
+                <button class="create-risk-btn" onclick="showCreateRiskModal()">+ Create Risk Report</button>
+            </div>
+            <div class="risk-stats-row">
+                <div class="risk-stat-item">
+                    <div class="risk-stat-value" id="riskTotalDisplay">0</div>
+                    <div class="risk-stat-label">Total Risks</div>
+                </div>
+                <div class="risk-stat-item">
+                    <div class="risk-stat-value" id="criticalRiskDisplay">0</div>
+                    <div class="risk-stat-label">Critical/High</div>
+                </div>
+                <div class="risk-stat-item">
+                    <div class="risk-stat-value" id="escalationDisplay">0</div>
+                    <div class="risk-stat-label">Need Escalation</div>
+                </div>
+                <div class="risk-stat-item">
+                    <div class="risk-stat-value" id="riskCoverageDisplay">0%</div>
+                    <div class="risk-stat-label">Risk Coverage</div>
+                </div>
+            </div>
+            <div id="riskBoardContainer">
+                <!-- Risk board will be rendered here -->
+            </div>
+        </div>
+        <!-- Risk Creation Modal -->
+        <div id="createRiskModal" class="risk-modal">
+            <div class="risk-modal-content">
+                <div class="risk-modal-header">
+                    <h2>🚨 Create Risk Report</h2>
+                    <button class="close-modal" onclick="closeRiskModal()">×</button>
+                </div>
+                <form id="riskForm" onsubmit="submitRiskForm(event)">
+                    <div class="form-group">
+                        <label class="form-label">📌 Risk Title *</label>
+                        <input type="text" id="riskTitle" class="form-input" required placeholder="Concise title summarizing the risk">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">📍 Risk Category *</label>
+                            <select id="riskCategory" class="form-input" required>
+                                <option value="">Select Category</option>
+                                <option value="Operational">Operational</option>
+                                <option value="Financial">Financial</option>
+                                <option value="Cybersecurity">Cybersecurity</option>
+                                <option value="Technology">Technology & Integration</option>
+                                <option value="Reputational">Reputational</option>
+                                <option value="Compliance">Compliance & Regulatory</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">📄 Third-Party Involved *</label>
+                            <input type="text" id="thirdParty" class="form-input" required placeholder="Vendor name & details">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">🎯 Risk Description *</label>
+                        <textarea id="riskDescription" class="form-input form-textarea" required placeholder="Briefly explain the risk, potential impact, and affected business areas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">📉 Impact Level *</label>
+                        <div class="impact-levels">
+                            <div class="impact-level-option" data-value="Low">
+                                <span style="color: #059669;">Low</span>
+                            </div>
+                            <div class="impact-level-option" data-value="Medium">
+                                <span style="color: #D97706;">Medium</span>
+                            </div>
+                            <div class="impact-level-option" data-value="High">
+                                <span style="color: #EA580C;">High</span>
+                            </div>
+                            <div class="impact-level-option" data-value="Critical">
+                                <span style="color: #DC2626;">Critical</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">👥 Departments Affected</label>
+                        <div class="departments-grid">
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="IT"> IT
+                            </label>
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="Security"> Security
+                            </label>
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="Finance"> Finance
+                            </label>
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="Legal"> Legal
+                            </label>
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="Operations"> Operations
+                            </label>
+                            <label class="dept-checkbox">
+                                <input type="checkbox" name="departments" value="Compliance"> Compliance
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="dept-checkbox">
+                            <input type="checkbox" id="escalationRequired">
+                            <span class="form-label">📢 Escalation Required</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">⚠️ Recommended Action</label>
+                        <textarea id="recommendedAction" class="form-input form-textarea" placeholder="Suggested mitigation steps—without assuming responsibility for execution"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeRiskModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Risk Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/dashboard.js"></script>
+</body>
+</html> 
