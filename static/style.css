@@ -4,6 +4,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE and Edge */
+}
+*::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
 }
 
 /* --- GLOBAL COLOURS & FONTS --- */
@@ -77,7 +84,7 @@ body {
 
 /* --- SIDEBAR --- */
 .sidebar {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
@@ -85,7 +92,19 @@ body {
     background: #552E8C;
     color: #fff;
     font-size: 0.97rem;
-    border-right: 1.5px solid #e5e7eb;
+    border-right: 1.5px solid #e5e7eb; */
+    width: 260px; /* or your preferred width */
+    min-width: 220px;
+    max-width: 320px;
+    background:#552E8C;
+    color: #fff;
+    position: fixed; /* Fix the sidebar */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
 }
 .sidebar-logo {
     display: flex;
@@ -1485,6 +1504,14 @@ html, body {
     flex-direction: column;
     justify-content: flex-start;
     gap: 1.2rem;
+    border-top-left-radius: 22px !important;
+    border-top-right-radius: 22px !important;
+    /* Hide scrollbar for Chrome, Safari, Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+.recent-activity::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 @keyframes activityFadePop {
@@ -1642,14 +1669,23 @@ html, body {
     display: flex;
     min-height: 100vh;
     background: #f7f9fb;
+    overflow: hidden;
 }
 
 .main-content {
-    margin-left: 10px;
-    min-height: 100vh;
+    margin-left: 270px;
+    /* min-height: 100vh;
     background: none;
     border-left: none;
-    display: block;
+    display: block; */
+    flex: 1 1 auto;
+    height: 100vh;
+    overflow-y: auto; /* Scroll only the main content */
+    background: #f7f3ff;
+    padding: 0 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 1100px) {
@@ -1841,7 +1877,7 @@ html, body {
 }
 .overdue-tasks-section {
   margin: 2rem 0 1.5rem 0;
-  background: linear-gradient(90deg, #fff7ed 80%, #fef3c7 100%);
+  background: linear-gradient(90deg, #a878eb 80%, #9856e9 100%);
   border-radius: 18px;
   box-shadow: 0 6px 32px rgba(252, 165, 165, 0.13);
   padding: 1.7rem 1.3rem 1.2rem 1.3rem;
@@ -1850,10 +1886,10 @@ html, body {
   margin-left: 0;
   margin-right: auto;
   min-height: 120px;
-  border-left: 6px solid #fbbf24;
+  border-left: 6px solid #7556b3;
 }
 .overdue-tasks-section h2 {
-  color: #dc2626;
+  color: #f3efef;
   margin-bottom: 1.1rem;
   font-size: 1.35rem;
   font-weight: 800;
@@ -1873,7 +1909,7 @@ html, body {
 }
 .overdue-task-card {
   background: #fffdfa;
-  border: 1.5px solid #fde68a;
+  border: 1.5px solid #8d85f8;
   border-radius: 13px;
   padding: 1.1rem 1.2rem 1rem 1.2rem;
   box-shadow: 0 2px 12px rgba(252, 165, 165, 0.09);
@@ -1885,7 +1921,7 @@ html, body {
   position: relative;
 }
 .overdue-task-card:hover {
-  border-color: #fbbf24;
+  border-color: #b6b4ad;
   box-shadow: 0 10px 32px rgba(252, 165, 165, 0.16);
   transform: translateY(-3px) scale(1.025);
   z-index: 2;
@@ -1917,7 +1953,7 @@ html, body {
   margin-left: 8px;
   border-radius: 50%;
   padding: 0.3em 0.45em;
-  box-shadow: 0 1px 4px #fde68a;
+  box-shadow: 0 1px 4px #aa86f9;
   transition: color 0.2s, background 0.2s, transform 0.18s;
   float: right;
 }
@@ -1941,13 +1977,13 @@ html, body {
   font-size: 0.97rem;
   color: #b91c1c;
   align-items: center;
-  border-top: 1px solid #fde68a;
+  border-top: 1px solid #7a62bb;
   padding-top: 0.3rem;
   margin-top: 0.1rem;
   font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
 }
 .overdue-task-meta span {
-  background: #fef3c7;
+  background: #b6b0f5;
   color: #b91c1c;
   border-radius: 6px;
   padding: 0.13em 0.7em;
@@ -1958,7 +1994,7 @@ html, body {
   gap: 0.3em;
 }
 .overdue-task-meta span:first-child {
-  background: #fbbf24;
+  background: #c476f4;
   color: #fff;
 }
 @media (max-width: 700px) {
@@ -2311,4 +2347,103 @@ html, body {
     z-index: 1;
     background: #f6f3ff;
     transition: box-shadow 0.2s, background 0.2s;
+}
+
+/* --- Overdue Tasks Section: Match Dashboard Theme --- */
+.overdue-tasks-section {
+    background: var(--purple-light);
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.10);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    margin: 2rem 0;
+    max-width: 480px;
+    width: 100%;
+    border: 1.5px solid var(--purple-accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.overdue-tasks-section h2 {
+    color: var(--purple-main);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.overdue-task-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+    padding: 1.1rem 1rem 0.8rem 1rem;
+    margin-bottom: 1.1rem;
+    border: 1.5px solid var(--purple-accent);
+    transition: box-shadow 0.18s, border-color 0.18s;
+    position: relative;
+}
+.overdue-task-card:hover {
+    box-shadow: 0 6px 18px #a78bfa55;
+    border-color: var(--purple-main);
+}
+.overdue-task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+.overdue-task-key {
+    color: var(--purple-main);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+.overdue-bell-btn {
+    background: none;
+    border: none;
+    color: var(--purple-main);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: color 0.18s;
+}
+.overdue-bell-btn:hover {
+    color: #f87171;
+}
+.overdue-task-summary {
+    font-size: 1.05rem;
+    color: #232e47;
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+}
+.overdue-task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7em;
+    font-size: 0.98rem;
+    color: #7c3aed;
+    margin-bottom: 0.2rem;
+}
+.overdue-task-meta span {
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    border-radius: 8px;
+    padding: 0.18em 0.7em;
+    font-size: 0.97em;
+    font-weight: 600;
+    margin-right: 0.2em;
+}
+.overdue-task-meta span:first-child {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+.overdue-task-meta .overdue {
+    background: #f87171;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .overdue-tasks-section {
+        padding: 1rem 0.5rem;
+        max-width: 100vw;
+    }
 }
