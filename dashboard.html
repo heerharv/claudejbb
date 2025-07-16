@@ -15,11 +15,10 @@
             <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; margin-bottom:24px;"/>
         </div>
         <ul class="sidebar-nav">
-            <li class="sidebar-nav-item active"><a href="dashboard.html"><span class="sidebar-icon">🏠</span> Dashboard</a></li>
-            <li class="sidebar-nav-item"><a href="kanban.html"><span class="sidebar-icon">🗂️</span> Kanban Board</a></li>
-            <li class="sidebar-nav-item"><a href="timeline.html"><span class="sidebar-icon">🕒</span> Timeline</a></li>
-            <li class="sidebar-nav-item"><a href="risk.html"><span class="sidebar-icon">⚠️</span> Risk Management</a></li>
-            <li class="sidebar-nav-item"><a href="settings.html"><span class="sidebar-icon">⚙️</span> Settings</a></li>
+            <li class="sidebar-nav-item active"><a href="dashboard.html"><span class="sidebar-icon"></span> Dashboard</a></li>
+            <li class="sidebar-nav-item"><a href="kanban.html"><span class="sidebar-icon"></span> Kanban Board</a></li>
+            <li class="sidebar-nav-item"><a href="timeline.html"><span class="sidebar-icon"></span> Timeline</a></li>
+            <li class="sidebar-nav-item"><a href="settings.html"><span class="sidebar-icon"></span> Settings</a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="sidebar-user">
@@ -34,15 +33,12 @@
     <!-- Main Content Area -->
     <div class="main-content">
         <div class="header">
-            <img src="uncia_logo.png" alt="UNCIA Logo" style="height:40px; width:auto; display:block; margin-right:16px;"/>
             <div class="header-content">
-                <h1>UNCIA Jira Dashboard with Risk Management</h1>
-                <p>Integrated Project & Risk Management Dashboard</p>
+                <h1>UNCIA Jira Dashboard</h1>
+                <!-- Removed subtitle -->
             </div>
             <div class="header-actions">
-                <button class="create-risk-btn" onclick="window.location.href='risk.html'">
-                    🚨 Create Risk Report
-                </button>
+                <!-- Removed Create Risk Report button -->
             </div>
         </div>
         <div class="container">
@@ -58,57 +54,7 @@
             <div id="error-container"></div>
             <div id="loading" class="loading">Loading integrated dashboard data...</div>
             <div id="dashboard-section">
-                <!-- DASHBOARD: Main stats, risk summary, progress, charts, insights -->
-                <div class="stats-grid">
-                    <div class="stat-card total">
-                        <h3>Total Issues</h3>
-                        <div class="value" id="totalIssues">-</div>
-                        <div class="label">All issues in project</div>
-                    </div>
-                    <div class="stat-card completed">
-                        <h3>Completed</h3>
-                        <div class="value" id="completedIssues">-</div>
-                        <div class="label">Done & resolved</div>
-                    </div>
-                    <div class="stat-card progress">
-                        <h3>In Progress</h3>
-                        <div class="value" id="progressIssues">-</div>
-                        <div class="label">Currently active</div>
-                    </div>
-                    <div class="stat-card todo">
-                        <h3>To Do</h3>
-                        <div class="value" id="todoIssues">-</div>
-                        <div class="label">Pending work</div>
-                    </div>
-                    <div class="stat-card risk-total">
-                        <h3>Total Risks</h3>
-                        <div class="value" id="totalRisks">-</div>
-                        <div class="label">Active risk items</div>
-                    </div>
-                    <div class="stat-card risk-critical">
-                        <h3>Critical Risks</h3>
-                        <div class="value" id="criticalRisks">-</div>
-                        <div class="label">High priority risks</div>
-                    </div>
-                    <div class="stat-card risk-resolved">
-                        <h3>Risks Resolved</h3>
-                        <div class="value" id="resolvedRisks">-</div>
-                        <div class="label">This month</div>
-                    </div>
-                </div>
-                <!-- Overdue Tasks Card -->
-                <div class="dashboard-card overdue-tasks-section">
-                    <h2>⏰ Overdue Tasks</h2>
-                    <div id="overdueTasksCard"></div>
-                </div>
-                <!-- Enhanced Progress Section -->
-                <div class="progress-section">
-                    <h2>📊 Project Progress (Risk Adjusted)</h2>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-                    </div>
-                    <p id="progressText">0% Complete</p>
-                </div>
+                <!-- Move Project Implementation Timeline section here -->
                 <!-- Updated Project Timeline Section -->
                 <div class="timeline-section">
                     <h2>Project Implementation Timeline</h2>
@@ -181,6 +127,53 @@
                         <span id="timelineProgressText">Step 3 of 8 - GO LIVE INTIATION Phase</span>
                     </div>
                 </div>
+                <!-- Enhanced Progress Section -->
+                <div class="progress-section">
+                    <h2>📊 Project Progress</h2>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText">0% Complete</p>
+                </div>
+                <!-- End Timeline Section -->
+                <!-- DASHBOARD: Main stats, risk summary, progress, charts, insights -->
+                <!-- <div class="stats-grid">
+                    <div class="stat-card total">
+                        <h3>Total Issues</h3>
+                        <div class="value" id="totalIssues">-</div>
+                        <div class="label">All issues in project</div>
+                    </div>
+                    <div class="stat-card completed">
+                        <h3>Completed</h3>
+                        <div class="value" id="completedIssues">-</div>
+                        <div class="label">Done & resolved</div>
+                    </div>
+                    <div class="stat-card progress">
+                        <h3>In Progress</h3>
+                        <div class="value" id="progressIssues">-</div>
+                        <div class="label">Currently active</div>
+                    </div>
+                    <div class="stat-card todo">
+                        <h3>To Do</h3>
+                        <div class="value" id="todoIssues">-</div>
+                        <div class="label">Pending work</div>
+                    </div>
+                    <div class="stat-card risk-total">
+                        <h3>Total Risks</h3>
+                        <div class="value" id="totalRisks">-</div>
+                        <div class="label">Active risk items</div>
+                    </div>
+                    <div class="stat-card risk-critical">
+                        <h3>Critical Risks</h3>
+                        <div class="value" id="criticalRisks">-</div>
+                        <div class="label">High priority risks</div>
+                    </div>
+                    <div class="stat-card risk-resolved">
+                        <h3>Risks Resolved</h3>
+                        <div class="value" id="resolvedRisks">-</div>
+                        <div class="label">This month</div>
+                    </div>
+                </div> -->
                 <!-- Calendar Widget Section -->
                 <div class="calendar-section">
                     <h2>📅 Project Calendar</h2>
@@ -231,6 +224,49 @@
                 <div class="insights">
                     <h2>💡 Project & Risk Insights</h2>
                     <div id="projectInsights"></div>
+                </div>
+                <!-- Move Overdue Tasks Card to the end -->
+                <div class="dashboard-card overdue-tasks-section">
+                    <h2>⏰ Overdue Tasks</h2>
+                    <div id="overdueTasksCard"></div>
+                </div>
+                <!-- DASHBOARD: Main stats, risk summary, progress, charts, insights -->
+                <div class="stats-grid">
+                    <div class="stat-card total">
+                        <h3>Total Issues</h3>
+                        <div class="value" id="totalIssues">-</div>
+                        <div class="label">All issues in project</div>
+                    </div>
+                    <div class="stat-card completed">
+                        <h3>Completed</h3>
+                        <div class="value" id="completedIssues">-</div>
+                        <div class="label">Done & resolved</div>
+                    </div>
+                    <div class="stat-card progress">
+                        <h3>In Progress</h3>
+                        <div class="value" id="progressIssues">-</div>
+                        <div class="label">Currently active</div>
+                    </div>
+                    <div class="stat-card todo">
+                        <h3>To Do</h3>
+                        <div class="value" id="todoIssues">-</div>
+                        <div class="label">Pending work</div>
+                    </div>
+                    <div class="stat-card risk-total">
+                        <h3>Total Risks</h3>
+                        <div class="value" id="totalRisks">-</div>
+                        <div class="label">Active risk items</div>
+                    </div>
+                    <div class="stat-card risk-critical">
+                        <h3>Critical Risks</h3>
+                        <div class="value" id="criticalRisks">-</div>
+                        <div class="label">High priority risks</div>
+                    </div>
+                    <div class="stat-card risk-resolved">
+                        <h3>Risks Resolved</h3>
+                        <div class="value" id="resolvedRisks">-</div>
+                        <div class="label">This month</div>
+                    </div>
                 </div>
             </div>
         </div>

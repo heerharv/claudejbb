@@ -1053,6 +1053,22 @@ function createCalendarDay(day, isOtherMonth, date) {
     return dayElement;
 }
 
+// Helper to robustly parse date strings
+function parseIssueDate(dateStr) {
+    if (!dateStr) return null;
+    // Try ISO first
+    let d = new Date(dateStr);
+    if (!isNaN(d)) return d;
+    // Try Jira format (e.g., 2025-07-16T00:00:00.000+0000)
+    if (typeof dateStr === 'string' && dateStr.length >= 10) {
+        // Remove timezone if present
+        const cleaned = dateStr.replace(/\+\d{4}$/, '').replace(/Z$/, '');
+        d = new Date(cleaned);
+        if (!isNaN(d)) return d;
+    }
+    return null;
+}
+
 function getTasksForDate(date) {
     if (!allIssuesData || allIssuesData.length === 0) {
         return [];
@@ -1061,9 +1077,9 @@ function getTasksForDate(date) {
     return allIssuesData.filter(issue => {
         let taskDate = null;
         if (issue.duedate) {
-            taskDate = new Date(issue.duedate);
+            taskDate = parseIssueDate(issue.duedate);
         } else if (issue.created) {
-            taskDate = new Date(issue.created);
+            taskDate = parseIssueDate(issue.created);
         }
         if (taskDate) {
             return taskDate.toDateString() === dateString;
@@ -1196,6 +1212,7 @@ async function loadAllIssuesForCalendar() {
         }
         const issuesData = await response.json();
         allIssuesData = issuesData.issues || [];
+        console.log('Loaded issues for calendar:', allIssuesData); // Debug
         updateCalendarDisplay();
         updateDailyTasks();
         renderOverdueTasksCard(); // <-- render overdue card
